@@ -6,6 +6,7 @@ import { useUiStore } from "../../store/ui.store";
 import { SignOut } from "@phosphor-icons/react";
 import { useAuthStore } from "../../store/auth.store";
 import { useNavigate } from "react-router-dom";
+import { BrandLogo } from "../brand/BrandLogo";
 
 type Props = {
   variant?: "minimal" | "app";
@@ -27,7 +28,11 @@ export function Topbar({ variant = "app" }: Props) {
   return (
     <header className={styles.topbar}>
       <div className={styles.left}>
-        <div className={styles.brand}>{naming.getApp("name")}</div>
+        <div className={styles.left}>
+        <BrandLogo height={42} />
+        <span className={styles.brandText}>Espaço 01</span>
+      </div>
+
       </div>
 
       <div className={styles.right}>

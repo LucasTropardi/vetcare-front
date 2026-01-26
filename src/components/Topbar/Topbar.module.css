@@ -77,3 +77,8 @@
   color: var(--text);
   font-size: var(--text-sm);
 }
+
+.brandText {
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.3px;
+}

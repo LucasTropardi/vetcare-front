@@ -12,7 +12,7 @@ export const pt = {
     home: "Início",
   },
   auth: {
-    title: "Acesse sua conta",
+    title: "Login",
     subtitle: "Entre com seu e-mail e senha para continuar",
     login: "Entrar",
   },

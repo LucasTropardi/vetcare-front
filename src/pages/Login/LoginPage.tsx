@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
+import { BrandLogo } from "../../components/brand/BrandLogo";
 import styles from "./LoginPage.module.css";
 import { useNaming } from "../../i18n/useNaming";
 import { login } from "../../services/api/auth.service";
@@ -55,8 +55,11 @@ export function LoginPage() {
 
   return (
     <div className={styles.card}>
+      <div className={styles.brandArea}>
+        <BrandLogo height={104} />
+      </div>
       <h1 className={styles.title}>{naming.getAuth("title")}</h1>
-      <p className={styles.subtitle}>{naming.getAuth("subtitle")}</p>
+      {/* <p className={styles.subtitle}>{naming.getAuth("subtitle")}</p> */}
 
       <form className={styles.form} onSubmit={onSubmit}>
         <div className={styles.field}>
