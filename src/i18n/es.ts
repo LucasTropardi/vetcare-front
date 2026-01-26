@@ -6,6 +6,10 @@ export const es = {
   messages: {
     loading: "Cargando...",
     invalidCredentials: "Credenciales inválidas",
+    authenticated: "Autenticado con éxito",
+  },
+  titles: {
+    home: "Inicio",
   },
   auth: {
     title: "Inicia sesión",

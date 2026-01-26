@@ -6,6 +6,10 @@ export const pt = {
   messages: {
     loading: "Carregando...",
     invalidCredentials: "Credenciais inválidas",
+    authenticated: "Autenticado com sucesso",
+  },
+  titles: {
+    home: "Início",
   },
   auth: {
     title: "Acesse sua conta",

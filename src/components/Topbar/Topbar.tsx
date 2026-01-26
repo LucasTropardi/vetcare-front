@@ -3,6 +3,9 @@ import { Moon, Sun, Translate } from "@phosphor-icons/react";
 import { useNaming } from "../../i18n/useNaming";
 import { Naming, type Lang } from "../../i18n/naming";
 import { useUiStore } from "../../store/ui.store"; 
+import { SignOut } from "@phosphor-icons/react";
+import { useAuthStore } from "../../store/auth.store";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   variant?: "minimal" | "app";
@@ -12,6 +15,14 @@ export function Topbar({ variant = "app" }: Props) {
   const naming = useNaming();
   const theme = useUiStore((s) => s.theme);
   const toggleTheme = useUiStore((s) => s.toggleTheme);
+
+  const clearAuth = useAuthStore((s) => s.clearAuth);
+  const navigate = useNavigate();
+
+  function logout() {
+    clearAuth();
+    navigate("/login", { replace: true });
+  }
 
   return (
     <header className={styles.topbar}>
@@ -40,8 +51,15 @@ export function Topbar({ variant = "app" }: Props) {
 
         {variant === "app" && (
           <div className={styles.userArea}>
-            {/* Placeholder: depois entra avatar/nome/menú */}
             <div className={styles.userChip}>User</div>
+            <button
+              className={styles.iconButton}
+              onClick={logout}
+              aria-label="Logout"
+              title="Logout"
+            >
+              <SignOut size={18} />
+            </button>
           </div>
         )}
       </div>

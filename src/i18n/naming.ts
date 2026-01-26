@@ -69,6 +69,10 @@ export class Naming {
     return Naming.t(`messages.${String(key)}`, params);
   }
 
+  static getTitle(key: keyof Dict["titles"], params?: Record<string, string | number>) {
+    return Naming.t(`titles.${String(key)}`, params);
+  }
+
   static getAuth(key: keyof Dict["auth"], params?: Record<string, string | number>) {
     return Naming.t(`auth.${String(key)}`, params);
   }
