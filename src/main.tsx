@@ -4,10 +4,12 @@ import { Naming } from "./i18n/naming";
 import "./styles/global.css";
 import { router } from "./app/router";
 import { RouterProvider } from 'react-router-dom';
+import { AuthBootstrap } from './Bootstrap';
 
 Naming.init();
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <RouterProvider router={router} />
+    <AuthBootstrap />
   </StrictMode>,
 )

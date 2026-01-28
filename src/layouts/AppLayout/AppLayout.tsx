@@ -4,6 +4,7 @@ import { Sidebar } from "../Sidebar/Sidebar";
 import styles from "./AppLayout.module.css";
 import { useEffect } from "react";
 import { useUiStore } from "../../store/ui.store";
+import { ConfirmModalHost } from "../../components/ConfirmModal/ConfirmModalHost";
 
 export function AppLayout() {
   const collapsed = useUiStore((s) => s.sidebarCollapsed);
@@ -21,6 +22,8 @@ export function AppLayout() {
           <Outlet />
         </div>
       </div>
+      <ConfirmModalHost />
     </div>
+    
   );
 }

@@ -21,8 +21,8 @@
 }
 
 .iconButton {
-  height: 36px;
-  width: 36px;
+  height: 46px;
+  width: 46px;
   display: inline-grid;
   place-items: center;
   border-radius: var(--radius-md);
@@ -71,4 +71,115 @@
 .collapsed .item,
 .collapsed .itemButton {
   justify-content: center;
+}
+
+.userMenu {
+  position: relative;
+}
+
+.userTrigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--text);
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+}
+
+.userTrigger:hover {
+  background: var(--surface-2);
+  border-color: var(--border);
+}
+
+.userTriggerText {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+
+.userName {
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userEmail {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userDropdown {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + var(--space-2));
+  background: var(--surface);
+  border: var(--border-1) solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-2);
+  padding: var(--space-2);
+  z-index: var(--z-dropdown);
+}
+
+.userMeta {
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.userMetaName {
+  font-weight: var(--weight-semibold);
+}
+
+.userMetaEmail {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.userMetaRole {
+  font-size: var(--text-xs);
+  color: var(--text-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dropdownDivider {
+  height: 1px;
+  background: var(--border);
+  margin: var(--space-2) 0;
+}
+
+.dropdownItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+}
+
+.dropdownItem:hover {
+  background: var(--surface-2);
+  border-color: var(--border);
+}
+
+.collapsed .userTrigger {
+  justify-content: center;
+  padding: var(--space-2);
 }

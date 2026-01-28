@@ -1,18 +1,16 @@
 import styles from "./Topbar.module.css";
-import { Moon, Sun, Translate } from "@phosphor-icons/react";
+import { MoonIcon, SunIcon, TranslateIcon } from "@phosphor-icons/react";
 import { useNaming } from "../../i18n/useNaming";
 import { Naming, type Lang } from "../../i18n/naming";
 import { useUiStore } from "../../store/ui.store"; 
-import { SignOut } from "@phosphor-icons/react";
 import { useAuthStore } from "../../store/auth.store";
 import { useNavigate } from "react-router-dom";
-import { BrandLogo } from "../brand/BrandLogo";
 
 type Props = {
   variant?: "minimal" | "app";
 };
 
-export function Topbar({ variant = "app" }: Props) {
+export function Topbar({ }: Props) {
   const naming = useNaming();
   const theme = useUiStore((s) => s.theme);
   const toggleTheme = useUiStore((s) => s.toggleTheme);
@@ -29,7 +27,6 @@ export function Topbar({ variant = "app" }: Props) {
     <header className={styles.topbar}>
       <div className={styles.left}>
         <div className={styles.left}>
-        <BrandLogo height={42} />
         <span className={styles.brandText}>Espaço 01</span>
       </div>
 
@@ -37,7 +34,7 @@ export function Topbar({ variant = "app" }: Props) {
 
       <div className={styles.right}>
         <div className={styles.lang}>
-          <Translate size={18} />
+          <TranslateIcon size={18} />
           <select
             className={styles.select}
             value={naming.getLang()}
@@ -51,22 +48,8 @@ export function Topbar({ variant = "app" }: Props) {
         </div>
 
         <button className={styles.iconButton} onClick={toggleTheme} aria-label="Theme">
-          {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
+          {theme === "light" ? <MoonIcon size={18} /> : <SunIcon size={18} />}
         </button>
-
-        {variant === "app" && (
-          <div className={styles.userArea}>
-            <div className={styles.userChip}>User</div>
-            <button
-              className={styles.iconButton}
-              onClick={logout}
-              aria-label="Logout"
-              title="Logout"
-            >
-              <SignOut size={18} />
-            </button>
-          </div>
-        )}
       </div>
     </header>
   );

@@ -1,8 +1,8 @@
 import { http } from "./http";
-import type { UserResponse } from "./types";
+import type { UserResponseWithRole } from "./types";
 
-export async function getMe(): Promise<UserResponse> {
-  const { data } = await http.get<UserResponse>("/api/users/me");
+export async function getMe(): Promise<UserResponseWithRole> {
+  const { data } = await http.get<UserResponseWithRole>("/api/users/me");
   return data;
 }
 

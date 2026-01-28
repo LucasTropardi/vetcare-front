@@ -77,6 +77,10 @@ export class Naming {
     return Naming.t(`auth.${String(key)}`, params);
   }
 
+  static getLabel(key: keyof Dict["labels"], params?: Record<string, string | number>) {
+    return Naming.t(`labels.${String(key)}`, params);
+  }
+
   static getApp(key: keyof Dict["app"]) {
     return Naming.t(`app.${String(key)}`);
   }
