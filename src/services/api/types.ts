@@ -24,3 +24,38 @@ export type UserResponseWithRole = {
   role: Role;
   active: boolean;
 };
+
+export type CreateUserRequest = {
+  name: string;
+  email: string;
+  password: string;
+  role: Role;
+};
+
+export type UpdateMeRequest = {
+  name?: string;
+  email?: string;
+  password?: string;
+};
+
+export type UpdateUserRequest = {
+  name?: string;
+  email?: string;
+  password?: string;
+  role?: Role;
+  active?: boolean;
+};
+
+export type PageResponse<T> = {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
+  first: boolean;
+  last: boolean;
+  numberOfElements: number;
+  empty: boolean;
+  sort?: unknown;
+  pageable?: unknown;
+};

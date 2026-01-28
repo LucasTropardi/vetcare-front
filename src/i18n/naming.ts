@@ -81,6 +81,14 @@ export class Naming {
     return Naming.t(`labels.${String(key)}`, params);
   }
 
+  static getPlaceholder(key: keyof Dict["placeholders"], params?: Record<string, string | number>) {
+    return Naming.t(`placeholders.${String(key)}`, params);
+  }
+
+  static getRole(key: keyof Dict["roles"], params?: Record<string, string | number>) {
+    return Naming.t(`roles.${String(key)}`, params);
+  }
+
   static getApp(key: keyof Dict["app"]) {
     return Naming.t(`app.${String(key)}`);
   }

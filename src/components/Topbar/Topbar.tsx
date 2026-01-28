@@ -3,8 +3,6 @@ import { MoonIcon, SunIcon, TranslateIcon } from "@phosphor-icons/react";
 import { useNaming } from "../../i18n/useNaming";
 import { Naming, type Lang } from "../../i18n/naming";
 import { useUiStore } from "../../store/ui.store"; 
-import { useAuthStore } from "../../store/auth.store";
-import { useNavigate } from "react-router-dom";
 
 type Props = {
   variant?: "minimal" | "app";
@@ -14,14 +12,6 @@ export function Topbar({ }: Props) {
   const naming = useNaming();
   const theme = useUiStore((s) => s.theme);
   const toggleTheme = useUiStore((s) => s.toggleTheme);
-
-  const clearAuth = useAuthStore((s) => s.clearAuth);
-  const navigate = useNavigate();
-
-  function logout() {
-    clearAuth();
-    navigate("/login", { replace: true });
-  }
 
   return (
     <header className={styles.topbar}>
@@ -34,7 +24,6 @@ export function Topbar({ }: Props) {
 
       <div className={styles.right}>
         <div className={styles.lang}>
-          <TranslateIcon size={18} />
           <select
             className={styles.select}
             value={naming.getLang()}

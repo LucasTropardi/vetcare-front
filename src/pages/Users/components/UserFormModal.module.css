@@ -1,0 +1,143 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: grid;
+  place-items: center;
+  padding: var(--space-6);
+  z-index: var(--z-modal);
+}
+
+.panel {
+  width: 100%;
+  max-width: 560px;
+  background: var(--surface);
+  border: var(--border-1) solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-3);
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4);
+  border-bottom: var(--border-1) solid var(--border);
+}
+
+.title {
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-lg);
+}
+
+.closeBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  border: var(--border-1) solid var(--border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 22px;
+}
+
+.closeBtn:hover {
+  background: var(--surface-2);
+}
+
+.state {
+  padding: var(--space-6);
+  color: var(--text-muted);
+}
+
+.form {
+  padding: var(--space-4);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.field span {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.field input,
+.field select {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  border: var(--border-1) solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--input-text);
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  box-shadow: var(--focus);
+  border-color: transparent;
+}
+
+.switchRow {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-top: var(--space-1);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: var(--border-1) solid var(--border);
+}
+
+.btnGhost,
+.btnPrimary {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  border: var(--border-1) solid var(--border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+}
+
+.btnGhost:hover {
+  background: var(--surface-2);
+}
+
+.btnPrimary {
+  border-color: transparent;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+}
+
+.btnPrimary:hover {
+  background: var(--btn-bg-hover);
+}
+
+.btnPrimary:disabled,
+.btnGhost:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

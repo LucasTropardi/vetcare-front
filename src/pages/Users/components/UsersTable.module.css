@@ -1,0 +1,79 @@
+.state {
+  padding: var(--space-6);
+  color: var(--text-muted);
+}
+
+.tableWrap {
+  width: 100%;
+  overflow: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead th {
+  text-align: left;
+  font-weight: var(--weight-semibold);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: var(--border-1) solid var(--border);
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-base);
+}
+
+.table tbody td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: var(--border-1) solid var(--border);
+  vertical-align: middle;
+}
+
+.nameCell {
+  font-weight: var(--weight-medium);
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+.actionsCol {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}
+
+.actionBtn {
+  padding: 0.45rem 0.7rem;
+  border-radius: var(--radius-md);
+  border: var(--border-1) solid var(--border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+}
+
+.actionBtn:hover {
+  background: var(--surface-2);
+}
+
+.actionBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.danger {
+  border-color: rgba(220, 38, 38, 0.35);
+}
+
+.danger:hover {
+  background: rgba(220, 38, 38, 0.12);
+}

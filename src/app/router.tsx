@@ -4,6 +4,7 @@ import { AppLayout } from "../layouts/AppLayout/AppLayout";
 import { LoginPage } from "../pages/Login/LoginPage";
 import { RequireAuth } from "./RequireAuth"; 
 import { HomePage } from "../pages/Home/HomePage";
+import { UsersPage } from "../pages/Users/UsersPage";
 
 export const router = createBrowserRouter([
   {
@@ -16,6 +17,9 @@ export const router = createBrowserRouter([
         <AppLayout />
       </RequireAuth>
     ),
-    children: [{ path: "/", element: <HomePage /> }],
+    children: [
+      { path: "/", element: <HomePage /> },
+      {  path: "/users", element: <UsersPage />}
+    ],
   },
 ]);

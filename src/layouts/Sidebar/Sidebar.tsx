@@ -5,10 +5,11 @@ import { useUiStore } from "../../store/ui.store";
 import { useAuthStore } from "../../store/auth.store";
 import { useNavigate, Link } from "react-router-dom";
 import { BrandLogo } from "../../components/brand/BrandLogo";
-import { Naming } from "../../i18n/naming";
 import { useConfirmStore } from "../../store/confirm.store";
+import { useNaming } from "../../i18n/useNaming";
 
 export function Sidebar() {
+  const naming = useNaming();
   const collapsed = useUiStore((s) => s.sidebarCollapsed);
   const toggle = useUiStore((s) => s.toggleSidebar);
 
@@ -21,12 +22,14 @@ export function Sidebar() {
 
   const confirm = useConfirmStore((s) => s.confirm);
 
+  const isAdmin = me?.role === "ADMIN";
+
   async function handleLogout() {
     const ok = await confirm({
-      title: Naming.getLabel("sair"),
-      message: Naming.getMessage("encerrarSessaoConfirm"),
-      confirmText: Naming.getLabel("sair"),
-      cancelText: Naming.getLabel("cancel"),
+      title: naming.getLabel("sair"),
+      message: naming.getMessage("encerrarSessaoConfirm"),
+      confirmText: naming.getLabel("sair"),
+      cancelText: naming.getLabel("cancel"),
       danger: true,
     });
 
@@ -62,15 +65,24 @@ export function Sidebar() {
         <button className={styles.iconButton} onClick={toggle} aria-label="Toggle sidebar">
           <BrandLogo height={32} />
         </button>
-        {!collapsed && <div className={styles.title}>{Naming.getTitle("menu")}</div>}
+        {!collapsed && <div className={styles.title}>{naming.getTitle("menu")}</div>}
       </div>
 
       <nav className={styles.nav}>
         <Link className={styles.item} to="/">
           <HouseIcon size={18} />
-          {!collapsed && <span>{Naming.getTitle("home")}</span>}
+          {!collapsed && <span>{naming.getTitle("home")}</span>}
         </Link>
       </nav>
+
+      {isAdmin && (
+        <nav className={styles.nav}>
+          <Link className={styles.item} to="/users">
+            <HouseIcon size={18} />
+            {!collapsed && <span>{naming.getTitle("users")}</span>}
+          </Link>
+        </nav>
+      )}
 
       <div className={styles.footer}>
         {/* USER MENU */}
@@ -80,14 +92,14 @@ export function Sidebar() {
             onClick={() => setUserMenuOpen((v) => !v)}
             aria-haspopup="menu"
             aria-expanded={userMenuOpen}
-            title={me?.email ?? "Usuário"}
+            title={me?.email ?? naming.getTitle("user")}
           >
             <UserCircleIcon size={32} />
             {!collapsed && (
               <>
                 <div className={styles.userTriggerText}>
-                  <div className={styles.userName}>{me?.name ?? "Usuário"}</div>
-                  <div className={styles.userEmail}>{me?.email ?? "Email não disponível"}</div>
+                  <div className={styles.userName}>{me?.name ?? naming.getTitle("user")}</div>
+                  <div className={styles.userEmail}>{me?.email ?? naming.getMessage("emailNotAvailable")}</div>
                 </div>
                 <CaretUpDownIcon size={16} />
               </>
@@ -97,7 +109,7 @@ export function Sidebar() {
           {userMenuOpen && !collapsed && (
             <div className={styles.userDropdown} role="menu">
               <div className={styles.userMeta}>
-                <div className={styles.userMetaName}>{me?.name ?? "Usuário"}</div>
+                <div className={styles.userMetaName}>{me?.name ?? naming.getTitle("user")}</div>
                 <div className={styles.userMetaEmail}>{me?.email ?? "Email não disponível"}</div>
                 <div className={styles.userMetaRole}>{me?.role ?? "USER"}</div>
               </div>
@@ -107,7 +119,7 @@ export function Sidebar() {
               {/* adicionar "Editar perfil" aqui */}
               <button className={styles.dropdownItem} onClick={handleLogout} role="menuitem">
                 <SignOutIcon size={18} />
-                <span>{Naming.getLabel("sair")}</span>
+                <span>{naming.getLabel("sair")}</span>
               </button>
             </div>
           )}
