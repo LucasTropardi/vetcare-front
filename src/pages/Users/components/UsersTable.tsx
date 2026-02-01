@@ -4,6 +4,7 @@ import { RoleBadge } from "./RoleBadge";
 import { UserStatusBadge } from "./UserStatusBadge";
 import type { Role, UserResponseWithRole } from "../../../services/api/types";
 import { useNaming } from "../../../i18n/useNaming"; 
+import { PauseIcon, PenIcon, PlayIcon, TrashIcon } from "@phosphor-icons/react";
 
 type Props = {
   users: UserResponseWithRole[];
@@ -26,7 +27,7 @@ export function UsersTable({
 }: Props) {
   const naming = useNaming();
   if (loading) return <div className={styles.state}>{naming.getLabel("loading")}</div>;
-  if (!users.length) return <div className={styles.state}>Nenhum usuário encontrado.</div>;
+  if (!users.length) return <div className={styles.state}>{naming.getMessage("noUsersFound")}</div>;
 
   return (
     <div className={styles.tableWrap}>
@@ -62,7 +63,7 @@ export function UsersTable({
                     disabled={!canEdit}
                     title={!canEdit ? naming.getMessage("noPermissionEditUser") : naming.getLabel("edit")}
                   >
-                    {naming.getLabel("edit")}
+                    <PenIcon size={20} />
                   </button>
 
                   <button
@@ -71,7 +72,7 @@ export function UsersTable({
                     disabled={!canEdit}
                     title={!canEdit ? naming.getMessage("noPermission") : u.active ? naming.getLabel("deactivate") : naming.getLabel("activate")}
                   >
-                    {u.active ? naming.getLabel("deactivate") : naming.getLabel("activate")}
+                    {u.active ? <PauseIcon size={20} /> : <PlayIcon size={20} />}
                   </button>
 
                   <button
@@ -80,7 +81,7 @@ export function UsersTable({
                     disabled={!canEdit}
                     title={!canEdit ? naming.getMessage("noPermission") : naming.getLabel("delete")}
                   >
-                    {naming.getLabel("delete")}
+                    <TrashIcon size={20} />
                   </button>
                 </td>
               </tr>

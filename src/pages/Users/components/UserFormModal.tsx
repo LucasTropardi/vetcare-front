@@ -120,6 +120,13 @@ export function UserFormModal({ userId, onClose, onSaved, currentRole, canEditTa
       }
 
       onSaved();
+    } catch (error) {
+      console.log("Error saving user:", error);
+      await confirm({
+        title: naming.getTitle("errorSavingUser"),
+        message: error instanceof Error ? error.message : naming.getMessage("unknown"),
+        confirmText: naming.getLabel("ok"),
+      });
     } finally {
       setSaving(false);
     }

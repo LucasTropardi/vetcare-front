@@ -20,6 +20,11 @@ export const es = {
     searchWithUserMailRole: "Buscar por nombre, correo o rol…",
     searchUsers: "Buscar usuarios",
     permissionDeniedForAccess: "No tienes permiso para acceder a esta área.",
+    youCannotActivateDeactivateYourself: "No puedes activar/desactivar tu propio usuario.",
+    deleteUserConfirm: "Este usuario será eliminado de la base de datos. ¿Desea continuar?",
+    unknown: "Error desconocido.",
+    areYouSure: "¿Estás seguro de que deseas",
+    noUsersFound: "No se encontraron usuarios.",
   },
   titles: {
     home: "Inicio",
@@ -28,6 +33,11 @@ export const es = {
     user: "Usuario",
     editUser: "Editar usuario",
     newUser: "Nuevo usuario",
+    forbidenAction: "Acción no permitida",
+    deleteUser: "Eliminar usuario",
+    errorDeletingUser: "Error al eliminar usuario",
+    errorUpdatingUserStatus: "Error al actualizar el estado del usuario",
+    errorSavingUser: "Error al guardar usuario",
   },
   auth: {
     title: "Inicia sesión",
@@ -55,6 +65,7 @@ export const es = {
     activate: "Activar",
     deactivate: "Desactivar",
     delete: "Eliminar",
+    ok: "OK",
   },
   placeholders: {
     name: "Nombre del usuario",
@@ -65,6 +76,10 @@ export const es = {
     ADMIN: "Administrador",
     VET: "Veterinario",
     RECEPTION: "Recepcionista",
+  },
+  actions: {
+    activateUser: "activar",
+    deactivateUser: "desactivar",
   },
   app: {
     name: "VetCare",

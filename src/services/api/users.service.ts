@@ -44,5 +44,5 @@ export async function updateUser(id: number, payload: UpdateUserRequest): Promis
 }
 
 export async function deleteUser(id: number): Promise<void> {
-  await http.delete(`/api/users/${id}`);
+  await http.delete(`/api/users/delete/${id}`);
 }

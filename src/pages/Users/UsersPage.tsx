@@ -59,32 +59,61 @@ export function UsersPage() {
     if (!canEditTarget(myRole, targetRole)) return;
 
     const ok = await confirm({
-      title: "Excluir usuário",
-      message: "Este usuário será removido (exclusão lógica). Deseja continuar?",
-      confirmText: "Excluir",
-      cancelText: "Cancelar",
+      title: naming.getTitle("deleteUser"),
+      message: naming.getMessage("deleteUserConfirm"),
+      confirmText: naming.getLabel("delete"),
+      cancelText: naming.getLabel("cancel"),
       danger: true,
     });
     if (!ok) return;
 
-    await deleteUser(id);
+    try {
+      await deleteUser(id);
+    } catch (error) {
+      console.log("Error deleting user:", error);
+      await confirm({
+        title: naming.getTitle("errorDeletingUser"),
+        message: error instanceof Error ? error.message : naming.getMessage("unknown"),
+        confirmText: naming.getLabel("ok"),
+      });
+      return;
+    }
     await load();
   }
 
   async function handleToggleActive(user: UserResponseWithRole) {
     if (!canEditTarget(myRole, user.role)) return;
 
-    const action = user.active ? "desativar" : "ativar";
+    if (user.id === me?.id) {
+      await confirm({
+        title: naming.getTitle("forbidenAction"),
+        message: naming.getMessage("youCannotActivateDeactivateYourself"),
+        confirmText: naming.getLabel("ok"),
+      });
+      return;
+    }
+
+    const action = user.active ? naming.getAction("deactivateUser") : naming.getAction("activateUser");
     const ok = await confirm({
       title: `${action[0].toUpperCase()}${action.slice(1)} usuário`,
-      message: `Tem certeza que deseja ${action} "${user.name}"?`,
+      message: `${naming.getMessage("areYouSure")} ${action} "${user.name}"?`,
       confirmText: user.active ? "Desativar" : "Ativar",
       cancelText: "Cancelar",
       danger: user.active,
     });
     if (!ok) return;
 
-    await updateUser(user.id, { active: !user.active });
+    try {
+      await updateUser(user.id, { active: !user.active });
+    } catch (error) {
+      console.log("Error updating user status:", error);
+      await confirm({
+        title: naming.getTitle("errorUpdatingUserStatus"),
+        message: error instanceof Error ? error.message : naming.getMessage("unknown"),
+        confirmText: naming.getLabel("ok"),
+      });
+      return;
+    }
     await load();
   }
 

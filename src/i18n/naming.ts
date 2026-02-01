@@ -89,6 +89,10 @@ export class Naming {
     return Naming.t(`roles.${String(key)}`, params);
   }
 
+  static getAction(key: keyof Dict["actions"], params?: Record<string, string | number>) {
+    return Naming.t(`actions.${String(key)}`, params);
+  }
+
   static getApp(key: keyof Dict["app"]) {
     return Naming.t(`app.${String(key)}`);
   }

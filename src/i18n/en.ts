@@ -20,6 +20,11 @@ export const en = {
     searchWithUserMailRole: "Search by name, email or role…",
     searchUsers: "Search users",
     permissionDeniedForAccess: "You do not have permission to access this area.",
+    youCannotActivateDeactivateYourself: "You cannot activate/deactivate your own user.",
+    deleteUserConfirm: "This user will be removed from the database. Do you want to continue?",
+    unknown: "Unknown error.",
+    areYouSure: "Are you sure you want to",
+    noUsersFound: "No users found.",
   },
   titles: {
     home: "Home",
@@ -28,6 +33,11 @@ export const en = {
     user: "User",
     editUser: "Edit user",
     newUser: "New user",
+    forbidenAction: "Forbidden action",
+    deleteUser: "Delete user",
+    errorDeletingUser: "Error deleting user",
+    errorUpdatingUserStatus: "Error updating user status",
+    errorSavingUser: "Error saving user",
   },
   auth: {
     title: "Sign in",
@@ -55,6 +65,7 @@ export const en = {
     activate: "Activate",
     deactivate: "Deactivate",
     delete: "Delete",
+    ok: "OK",
   },
   placeholders: {
     name: "User's name",
@@ -65,6 +76,10 @@ export const en = {
     ADMIN: "Administrator",
     VET: "Veterinarian",
     RECEPTION: "Receptionist",
+  },
+  actions: {
+    activateUser: "activate",
+    deactivateUser: "deactivate",
   },
   app: {
     name: "VetCare",
