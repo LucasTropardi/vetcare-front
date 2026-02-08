@@ -27,6 +27,7 @@ export function Sidebar() {
 
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
+  const setMeModalOpen = useUiStore((s) => s.setMeModalOpen);
 
   const confirm = useConfirmStore((s) => s.confirm);
 
@@ -132,6 +133,18 @@ export function Sidebar() {
               </div>
 
               <div className={styles.dropdownDivider} />
+
+              <button
+                className={styles.dropdownItem}
+                onClick={() => {
+                  setUserMenuOpen(false);
+                  setMeModalOpen(true);
+                }}
+                role="menuitem"
+              >
+                <UserCircleIcon size={18} />
+                <span>{naming.getLabel("editProfile")}</span>
+              </button>
 
               <button className={styles.dropdownItem} onClick={handleLogout} role="menuitem">
                 <SignOutIcon size={18} />

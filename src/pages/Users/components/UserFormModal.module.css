@@ -51,6 +51,12 @@
   color: var(--text-muted);
 }
 
+.error {
+  margin-top: var(--space-3);
+  color: var(--danger);
+  font-size: var(--text-sm);
+}
+
 .form {
   padding: var(--space-4);
 }

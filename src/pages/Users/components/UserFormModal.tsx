@@ -5,6 +5,7 @@ import { useConfirmStore } from "../../../store/confirm.store";
 import type { CreateUserRequest, Role, UpdateUserRequest, UserResponseWithRole } from "../../../services/api/types";
 import { createUser, getUserById, updateUser } from "../../../services/api/users.service";
 import { useNaming } from "../../../i18n/useNaming"; 
+import { getApiErrorMessage } from "../../../services/api/errors";
 
 type Props = {
   userId?: number;
@@ -121,10 +122,11 @@ export function UserFormModal({ userId, onClose, onSaved, currentRole, canEditTa
 
       onSaved();
     } catch (error) {
+      const apiMsg = getApiErrorMessage(error);
       console.log("Error saving user:", error);
       await confirm({
         title: naming.getTitle("errorSavingUser"),
-        message: error instanceof Error ? error.message : naming.getMessage("unknown"),
+        message: apiMsg ?? (error instanceof Error ? error.message : naming.getMessage("unknown")),
         confirmText: naming.getLabel("ok"),
       });
     } finally {

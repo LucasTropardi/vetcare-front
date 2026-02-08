@@ -8,6 +8,7 @@ import { useConfirmStore } from "../../store/confirm.store";
 import { useAuthStore } from "../../store/auth.store";
 import type { Role, UserResponseWithRole } from "../../services/api/types";
 import { deleteUser, listUsers, updateUser } from "../../services/api/users.service";
+import { getApiErrorMessage } from "../../services/api/errors";
 
 function canManageUsers(role?: Role) {
   return role === "ADMIN" || role === "VET";
@@ -74,10 +75,11 @@ export function UsersPage() {
     try {
       await deleteUser(id);
     } catch (error) {
+      const apiMsg = getApiErrorMessage(error);
       console.log("Error deleting user:", error);
       await confirm({
         title: naming.getTitle("errorDeletingUser"),
-        message: error instanceof Error ? error.message : naming.getMessage("unknown"),
+        message: apiMsg ?? (error instanceof Error ? error.message : naming.getMessage("unknown")),
         confirmText: naming.getLabel("ok"),
       });
       return;
@@ -110,10 +112,11 @@ export function UsersPage() {
     try {
       await updateUser(user.id, { active: !user.active });
     } catch (error) {
+      const apiMsg = getApiErrorMessage(error);
       console.log("Error updating user status:", error);
       await confirm({
         title: naming.getTitle("errorUpdatingUserStatus"),
-        message: error instanceof Error ? error.message : naming.getMessage("unknown"),
+        message: apiMsg ?? (error instanceof Error ? error.message : naming.getMessage("unknown")),
         confirmText: naming.getLabel("ok"),
       });
       return;
