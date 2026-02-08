@@ -43,6 +43,10 @@ export function UsersPage() {
   }
 
   useEffect(() => {
+    document.title = `${naming.getTitle("users")} • ${naming.getApp("name")}`;
+  }, [naming]);
+
+  useEffect(() => {
     load();
   }, []);
 

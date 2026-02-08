@@ -8,11 +8,24 @@ import { ConfirmModalHost } from "../../components/ConfirmModal/ConfirmModalHost
 
 export function AppLayout() {
   const collapsed = useUiStore((s) => s.sidebarCollapsed);
+  const setCollapsed = useUiStore((s) => s.setSidebarCollapsed);
+
+  useEffect(() => {
+    const mql = window.matchMedia("(max-width: 900px)");
+
+    const apply = () => {
+      if (mql.matches) setCollapsed(true);
+    };
+
+    apply();
+    mql.addEventListener("change", apply);
+    return () => mql.removeEventListener("change", apply);
+  }, [setCollapsed]);
 
   useEffect(() => {
     document.documentElement.style.setProperty("--sidebar-width", collapsed ? "72px" : "280px");
   }, [collapsed]);
-  
+
   return (
     <div className={styles.shell}>
       <Sidebar />
@@ -24,6 +37,5 @@ export function AppLayout() {
       </div>
       <ConfirmModalHost />
     </div>
-    
   );
 }

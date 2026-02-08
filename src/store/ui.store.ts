@@ -9,6 +9,8 @@ type UiState = {
 
   sidebarCollapsed: boolean;
   toggleSidebar: () => void;
+
+  setSidebarCollapsed: (value: boolean) => void;
 };
 
 const STORAGE_THEME = "vetcare:theme";
@@ -44,5 +46,7 @@ export const useUiStore = create<UiState>((set, get) => {
 
     sidebarCollapsed: false,
     toggleSidebar: () => set((s) => ({ sidebarCollapsed: !s.sidebarCollapsed })),
+
+    setSidebarCollapsed: (value) => set({ sidebarCollapsed: value }),
   };
 });

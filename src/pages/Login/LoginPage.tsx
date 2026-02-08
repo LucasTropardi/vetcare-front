@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,6 +28,10 @@ export function LoginPage() {
       password: z.string().min(1, "required"),
     });
   }, []);
+
+  useEffect(() => {
+    document.title = `${naming.getAuth("title")} • ${naming.getApp("name")}`;
+  }, [naming]);
 
   const {
     register,

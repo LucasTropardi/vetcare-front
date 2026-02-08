@@ -1,5 +1,5 @@
 import styles from "./Topbar.module.css";
-import { MoonIcon, SunIcon, TranslateIcon } from "@phosphor-icons/react";
+import { MoonIcon, SunIcon, ListIcon } from "@phosphor-icons/react";
 import { useNaming } from "../../i18n/useNaming";
 import { Naming, type Lang } from "../../i18n/naming";
 import { useUiStore } from "../../store/ui.store"; 
@@ -13,9 +13,19 @@ export function Topbar({ }: Props) {
   const theme = useUiStore((s) => s.theme);
   const toggleTheme = useUiStore((s) => s.toggleTheme);
 
+  const toggleSidebar = useUiStore((s) => s.toggleSidebar);
+
   return (
     <header className={styles.topbar}>
       <div className={styles.left}>
+        <button
+          className={styles.iconButton}
+          onClick={toggleSidebar}
+          aria-label="Menu"
+          title="Menu"
+        >
+          <ListIcon size={18} />
+        </button>
         <div className={styles.left}>
         <span className={styles.brandText}>Espaço 01</span>
       </div>

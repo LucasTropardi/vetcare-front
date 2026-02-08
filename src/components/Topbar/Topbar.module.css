@@ -8,6 +8,16 @@
   background: var(--surface);
 }
 
+@media (max-width: 900px) {
+  .topbar {
+    padding: 0 var(--space-4);
+  }
+
+  .brandText {
+    font-size: var(--text-sm);
+  }
+}
+
 .left {
   display: flex;
   align-items: center;

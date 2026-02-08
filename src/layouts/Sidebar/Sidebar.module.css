@@ -183,3 +183,32 @@
   justify-content: center;
   padding: var(--space-2);
 }
+
+@media (max-width: 900px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    width: 280px;
+    max-width: 86vw;
+
+    z-index: var(--z-modal);
+    box-shadow: var(--shadow-3);
+
+    transform: translateX(0);
+    transition: transform var(--dur-2) var(--ease-standard);
+  }
+
+  .collapsed {
+    transform: translateX(-105%);
+    padding: var(--space-4);
+  }
+
+  .collapsed .item,
+  .collapsed .itemButton,
+  .collapsed .userTrigger {
+    justify-content: flex-start;
+  }
+}

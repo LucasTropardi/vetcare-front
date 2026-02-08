@@ -8,10 +8,18 @@ import { BrandLogo } from "../../components/brand/BrandLogo";
 import { useConfirmStore } from "../../store/confirm.store";
 import { useNaming } from "../../i18n/useNaming";
 
+const MOBILE_BREAKPOINT = 900;
+
+function isMobileNow() {
+  return window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT}px)`).matches;
+}
+
 export function Sidebar() {
   const naming = useNaming();
+
   const collapsed = useUiStore((s) => s.sidebarCollapsed);
   const toggle = useUiStore((s) => s.toggleSidebar);
+  const setCollapsed = useUiStore((s) => s.setSidebarCollapsed);
 
   const me = useAuthStore((s) => s.me);
   const clearAuth = useAuthStore((s) => s.clearAuth);
@@ -23,6 +31,12 @@ export function Sidebar() {
   const confirm = useConfirmStore((s) => s.confirm);
 
   const isAdmin = me?.role === "ADMIN";
+
+  function closeSidebarOnMobile() {
+    if (!isMobileNow()) return;
+    setCollapsed(true);
+    setUserMenuOpen(false);
+  }
 
   async function handleLogout() {
     const ok = await confirm({
@@ -48,7 +62,11 @@ export function Sidebar() {
     }
 
     function onKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") setUserMenuOpen(false);
+      if (e.key === "Escape") {
+        setUserMenuOpen(false);
+
+        if (isMobileNow() && !collapsed) setCollapsed(true);
+      }
     }
 
     document.addEventListener("mousedown", onClickOutside);
@@ -57,7 +75,7 @@ export function Sidebar() {
       document.removeEventListener("mousedown", onClickOutside);
       document.removeEventListener("keydown", onKeyDown);
     };
-  }, []);
+  }, [collapsed, setCollapsed]);
 
   return (
     <aside className={`${styles.sidebar} ${collapsed ? styles.collapsed : ""}`}>
@@ -69,7 +87,7 @@ export function Sidebar() {
       </div>
 
       <nav className={styles.nav}>
-        <Link className={styles.item} to="/">
+        <Link className={styles.item} to="/" onClick={closeSidebarOnMobile}>
           <HouseIcon size={18} />
           {!collapsed && <span>{naming.getTitle("home")}</span>}
         </Link>
@@ -77,7 +95,7 @@ export function Sidebar() {
 
       {isAdmin && (
         <nav className={styles.nav}>
-          <Link className={styles.item} to="/users">
+          <Link className={styles.item} to="/users" onClick={closeSidebarOnMobile}>
             <HouseIcon size={18} />
             {!collapsed && <span>{naming.getTitle("users")}</span>}
           </Link>
@@ -85,11 +103,10 @@ export function Sidebar() {
       )}
 
       <div className={styles.footer}>
-        {/* USER MENU */}
         <div className={styles.userMenu} ref={userMenuRef}>
           <button
             className={styles.userTrigger}
-            onClick={() => setUserMenuOpen((v) => !v)}
+            onClick={collapsed ? toggle : () => setUserMenuOpen((v) => !v)}
             aria-haspopup="menu"
             aria-expanded={userMenuOpen}
             title={me?.email ?? naming.getTitle("user")}
@@ -116,7 +133,6 @@ export function Sidebar() {
 
               <div className={styles.dropdownDivider} />
 
-              {/* adicionar "Editar perfil" aqui */}
               <button className={styles.dropdownItem} onClick={handleLogout} role="menuitem">
                 <SignOutIcon size={18} />
                 <span>{naming.getLabel("sair")}</span>
