@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./Sidebar.module.css";
-import { HouseIcon, SignOutIcon, CaretUpDownIcon, UserCircleIcon } from "@phosphor-icons/react";
+import { HouseIcon, SignOutIcon, CaretUpDownIcon, UserCircleIcon, UsersThreeIcon } from "@phosphor-icons/react";
 import { useUiStore } from "../../store/ui.store";
 import { useAuthStore } from "../../store/auth.store";
 import { useNavigate, Link } from "react-router-dom";
@@ -91,6 +91,11 @@ export function Sidebar() {
         <Link className={styles.item} to="/" onClick={closeSidebarOnMobile}>
           <HouseIcon size={18} />
           {!collapsed && <span>{naming.getTitle("home")}</span>}
+        </Link>
+
+        <Link className={styles.item} to="/tutors" onClick={closeSidebarOnMobile}>
+          <UsersThreeIcon size={18} />
+          {!collapsed && <span>{naming.getTitle("tutors")}</span>}
         </Link>
       </nav>
 

@@ -46,6 +46,70 @@ export type UpdateUserRequest = {
   active?: boolean;
 };
 
+export type TutorAddressRequest = {
+  zipCode?: string;
+  street?: string;
+  number?: string;
+  complement?: string;
+  neighborhood?: string;
+  cityName?: string;
+  cityIbge?: string;
+  stateUf?: string;
+  country?: string;
+};
+
+export type TutorAddressResponse = {
+  tutorId: number;
+  zipCode?: string;
+  street?: string;
+  number?: string;
+  complement?: string;
+  neighborhood?: string;
+  cityName?: string;
+  cityIbge?: string;
+  stateUf?: string;
+  country?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TutorListItemResponse = {
+  id: number;
+  name: string;
+  document?: string;
+  phone?: string;
+  email?: string;
+  active: boolean;
+};
+
+export type TutorResponse = {
+  id: number;
+  name: string;
+  document?: string;
+  phone?: string;
+  email?: string;
+  active: boolean;
+  address?: TutorAddressResponse | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type CreateTutorRequest = {
+  name: string;
+  document?: string;
+  phone?: string;
+  email?: string;
+  address?: TutorAddressRequest;
+};
+
+export type UpdateTutorRequest = {
+  name: string;
+  document?: string;
+  phone?: string;
+  email?: string;
+  address?: TutorAddressRequest;
+};
+
 export type PageResponse<T> = {
   content: T[];
   totalElements: number;

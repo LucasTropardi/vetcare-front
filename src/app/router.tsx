@@ -5,6 +5,7 @@ import { LoginPage } from "../pages/Login/LoginPage";
 import { RequireAuth } from "./RequireAuth"; 
 import { HomePage } from "../pages/Home/HomePage";
 import { UsersPage } from "../pages/Users/UsersPage";
+import { TutorsPage } from "../pages/Tutors/TutorsPage";
 
 export const router = createBrowserRouter([
   {
@@ -19,7 +20,8 @@ export const router = createBrowserRouter([
     ),
     children: [
       { path: "/", element: <HomePage /> },
-      {  path: "/users", element: <UsersPage />}
+      {  path: "/users", element: <UsersPage />},
+      {  path: "/tutors", element: <TutorsPage />},
     ],
   },
 ]);
