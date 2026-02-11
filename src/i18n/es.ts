@@ -39,6 +39,7 @@ export const es = {
     areYouSure: "¿Estás seguro de que deseas",
     noUsersFound: "No se encontraron usuarios.",
     noTutorsFound: "No se encontraron tutores.",
+    userSummarySubtitle: "Resumen rápido para seguimiento de usuarios.",
   },
   titles: {
     home: "Inicio",
@@ -60,6 +61,7 @@ export const es = {
     errorSavingUser: "Error al guardar usuario",
     errorDeletingTutor: "Error al eliminar tutor",
     errorSavingTutor: "Error al guardar tutor",
+    userSummary: "Resumen de usuarios",
   },
   auth: {
     title: "Inicia sesión",
@@ -89,6 +91,10 @@ export const es = {
     editProfile: "Editar perfil",
     activate: "Activar",
     deactivate: "Desactivar",
+    previous: "Anterior",
+    next: "Siguiente",
+    total: "Total",
+    usersByRole: "Usuarios por rol",
     delete: "Eliminar",
     ok: "OK",
     document: "Documento",

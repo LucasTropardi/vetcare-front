@@ -39,6 +39,7 @@ export const en = {
     areYouSure: "Are you sure you want to",
     noUsersFound: "No users found.",
     noTutorsFound: "No tutors found.",
+    userSummarySubtitle: "Quick overview to monitor users.",
   },
   titles: {
     home: "Home",
@@ -60,6 +61,7 @@ export const en = {
     errorSavingUser: "Error saving user",
     errorDeletingTutor: "Error deleting tutor",
     errorSavingTutor: "Error saving tutor",
+    userSummary: "User summary",
   },
   auth: {
     title: "Sign in",
@@ -89,6 +91,10 @@ export const en = {
     editProfile: "Edit profile",
     activate: "Activate",
     deactivate: "Deactivate",
+    previous: "Previous",
+    next: "Next",
+    total: "Total",
+    usersByRole: "Users by role",
     delete: "Delete",
     ok: "OK",
     document: "Document",

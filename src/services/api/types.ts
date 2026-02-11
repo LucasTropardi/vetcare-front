@@ -25,6 +25,15 @@ export type UserResponseWithRole = {
   active: boolean;
 };
 
+export type UserStatsResponse = {
+  total: number;
+  active: number;
+  inactive: number;
+  admin: number;
+  vet: number;
+  reception: number;
+};
+
 export type CreateUserRequest = {
   name: string;
   email: string;

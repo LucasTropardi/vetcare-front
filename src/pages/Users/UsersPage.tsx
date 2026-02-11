@@ -1,14 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./UsersPage.module.css";
 import { UsersTable } from "./components/UsersTable";
 import { UserFormModal } from "./components/UserFormModal";
+import { UsersStatsPanel } from "./components/UsersStatsPanel";
 import { useNaming } from "../../i18n/useNaming";
 
 import { useConfirmStore } from "../../store/confirm.store";
 import { useAuthStore } from "../../store/auth.store";
-import type { Role, UserResponseWithRole } from "../../services/api/types";
-import { deleteUser, listUsers, updateUser } from "../../services/api/users.service";
+import type { Role, UserResponseWithRole, UserStatsResponse } from "../../services/api/types";
+import { deleteUser, getUserStats, listUsers, updateUser } from "../../services/api/users.service";
 import { getApiErrorMessage } from "../../services/api/errors";
+import { getMaxListItems } from "../../config/listMemory";
 
 function canManageUsers(role?: Role) {
   return role === "ADMIN" || role === "VET";
@@ -21,25 +23,56 @@ function canEditTarget(current?: Role, target?: Role) {
 }
 
 export function UsersPage() {
+  const PAGE_SIZE = 15;
+  const MAX_ITEMS_IN_MEMORY = getMaxListItems(PAGE_SIZE);
   const naming = useNaming();
   const me = useAuthStore((s) => s.me);
   const confirm = useConfirmStore((s) => s.confirm);
 
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<UserResponseWithRole[]>([]);
+  const [stats, setStats] = useState<UserStatsResponse | null>(null);
+  const [statsLoading, setStatsLoading] = useState(false);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   const [query, setQuery] = useState("");
   const [modal, setModal] = useState<{ open: boolean; userId?: number }>({ open: false });
 
   const myRole = me?.role;
   const allowed = useMemo(() => canManageUsers(myRole), [myRole]);
+  const loadingRef = useRef(false);
 
-  async function load() {
+  async function load(targetPage = page, append = false) {
+    if (loadingRef.current) return;
+    loadingRef.current = true;
     setLoading(true);
     try {
-      const page = await listUsers({ page: 0, size: 50, sort: "name,asc" });
-      setUsers(page.content ?? []);
+      const response = await listUsers({ page: targetPage, size: PAGE_SIZE, sort: "name,asc" });
+      const content = response.content ?? [];
+      setUsers((prev) => {
+        if (!append) return content;
+        const merged = [...prev, ...content];
+        if (merged.length <= MAX_ITEMS_IN_MEMORY) return merged;
+        return merged.slice(merged.length - MAX_ITEMS_IN_MEMORY);
+      });
+      setPage(response.number ?? targetPage);
+      setTotalPages(response.totalPages ?? 0);
     } finally {
       setLoading(false);
+      loadingRef.current = false;
+    }
+  }
+
+  async function loadStats() {
+    setStatsLoading(true);
+    try {
+      const response = await getUserStats();
+      setStats(response);
+    } catch (error) {
+      console.log("Error loading user stats:", error);
+      setStats(null);
+    } finally {
+      setStatsLoading(false);
     }
   }
 
@@ -48,8 +81,11 @@ export function UsersPage() {
   }, [naming]);
 
   useEffect(() => {
-    load();
+    load(0);
+    loadStats();
   }, []);
+
+  const hasMore = page + 1 < totalPages;
 
   const filteredUsers = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -84,7 +120,7 @@ export function UsersPage() {
       });
       return;
     }
-    await load();
+    await Promise.all([load(0), loadStats()]);
   }
 
   async function handleToggleActive(user: UserResponseWithRole) {
@@ -121,7 +157,13 @@ export function UsersPage() {
       });
       return;
     }
-    await load();
+    setUsers((prev) => prev.map((u) => (u.id === user.id ? { ...u, active: !user.active } : u)));
+    await loadStats();
+  }
+
+  async function handleLoadMore() {
+    if (!hasMore || loading) return;
+    await load(page + 1, true);
   }
 
   if (!allowed) {
@@ -162,13 +204,17 @@ export function UsersPage() {
         <UsersTable
           users={filteredUsers}
           loading={loading}
+          hasMore={hasMore}
           currentRole={myRole}
           onEdit={(id) => setModal({ open: true, userId: id })}
           onDelete={handleDelete}
           onToggleActive={handleToggleActive}
+          onLoadMore={handleLoadMore}
           canEditTarget={canEditTarget}
         />
       </section>
+
+      <UsersStatsPanel stats={stats} loading={statsLoading} />
 
       {modal.open && (
         <UserFormModal
@@ -176,7 +222,7 @@ export function UsersPage() {
           onClose={() => setModal({ open: false })}
           onSaved={async () => {
             setModal({ open: false });
-            await load();
+            await Promise.all([load(0), loadStats()]);
           }}
           currentRole={myRole}
           canEditTarget={canEditTarget}

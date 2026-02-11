@@ -4,6 +4,7 @@ import type {
   PageResponse,
   UpdateMeRequest,
   UpdateUserRequest,
+  UserStatsResponse,
   UserResponseWithRole,
 } from "./types";
 
@@ -30,6 +31,11 @@ export type ListUsersParams = {
 
 export async function listUsers(params?: ListUsersParams): Promise<PageResponse<UserResponseWithRole>> {
   const { data } = await http.get<PageResponse<UserResponseWithRole>>("/api/users", { params });
+  return data;
+}
+
+export async function getUserStats(): Promise<UserStatsResponse> {
+  const { data } = await http.get<UserStatsResponse>("/api/users/stats");
   return data;
 }
 

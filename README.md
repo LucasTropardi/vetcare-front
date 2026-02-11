@@ -2,6 +2,18 @@
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
+## Environment
+
+Use `.env` to configure frontend runtime values.
+
+```bash
+VITE_API_BASE_URL=http://localhost:8080
+VITE_MAX_LIST_ITEMS=120
+```
+
+- `VITE_MAX_LIST_ITEMS`: max number of records kept in memory per infinite-scroll list.
+- If omitted or invalid, the app falls back to `pageSize * 8`.
+
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh

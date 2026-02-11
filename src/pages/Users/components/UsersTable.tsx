@@ -9,20 +9,24 @@ import { PauseIcon, PenIcon, PlayIcon, TrashIcon } from "@phosphor-icons/react";
 type Props = {
   users: UserResponseWithRole[];
   loading: boolean;
+  hasMore: boolean;
   currentRole?: Role;
   onEdit: (id: number) => void;
   onDelete: (id: number, targetRole?: Role) => void;
   onToggleActive: (user: UserResponseWithRole) => void;
+  onLoadMore: () => void;
   canEditTarget: (current?: Role, target?: Role) => boolean;
 };
 
 export function UsersTable({
   users,
   loading,
+  hasMore,
   currentRole,
   onEdit,
   onDelete,
   onToggleActive,
+  onLoadMore,
   canEditTarget,
 }: Props) {
   const naming = useNaming();
@@ -30,7 +34,16 @@ export function UsersTable({
   if (!users.length) return <div className={styles.state}>{naming.getMessage("noUsersFound")}</div>;
 
   return (
-    <div className={styles.tableWrap}>
+    <div
+      className={styles.tableWrap}
+      onScroll={(e) => {
+        if (!hasMore || loading) return;
+        const target = e.currentTarget;
+        const threshold = 80;
+        const reachedBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - threshold;
+        if (reachedBottom) onLoadMore();
+      }}
+    >
       <table className={styles.table}>
         <thead>
           <tr>
@@ -89,6 +102,7 @@ export function UsersTable({
           })}
         </tbody>
       </table>
+      {hasMore && <div className={styles.moreState}>{naming.getLabel("loading")}</div>}
     </div>
   );
 }

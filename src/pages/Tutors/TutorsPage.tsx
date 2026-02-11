@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./TutorsPage.module.css";
 import { TutorsTable } from "./components/TutorsTable";
 import { TutorFormModal } from "./components/TutorFormModal";
@@ -9,6 +9,7 @@ import { useAuthStore } from "../../store/auth.store";
 import type { Role, TutorListItemResponse } from "../../services/api/types";
 import { deleteTutor, listTutors } from "../../services/api/tutors.service";
 import { getApiErrorMessage } from "../../services/api/errors";
+import { getMaxListItems } from "../../config/listMemory";
 
 function canManageTutors(role?: Role) {
   return role === "ADMIN" || role === "VET" || role === "RECEPTION";
@@ -19,25 +20,47 @@ function canDeleteTutor(role?: Role) {
 }
 
 export function TutorsPage() {
+  const PAGE_SIZE = 15;
+  const MAX_ITEMS_IN_MEMORY = getMaxListItems(PAGE_SIZE);
   const naming = useNaming();
   const me = useAuthStore((s) => s.me);
   const confirm = useConfirmStore((s) => s.confirm);
 
   const [loading, setLoading] = useState(false);
   const [tutors, setTutors] = useState<TutorListItemResponse[]>([]);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   const [query, setQuery] = useState("");
   const [modal, setModal] = useState<{ open: boolean; tutorId?: number }>({ open: false });
 
   const myRole = me?.role;
   const allowed = useMemo(() => canManageTutors(myRole), [myRole]);
+  const loadingRef = useRef(false);
 
-  async function load() {
+  async function load(targetPage = page, targetQuery = query, append = false) {
+    if (loadingRef.current) return;
+    loadingRef.current = true;
     setLoading(true);
     try {
-      const page = await listTutors({ page: 0, size: 50, sort: "name,asc" });
-      setTutors(page.content ?? []);
+      const normalizedQuery = targetQuery.trim();
+      const response = await listTutors({
+        page: targetPage,
+        size: PAGE_SIZE,
+        sort: "name,asc",
+        query: normalizedQuery || undefined,
+      });
+      const content = response.content ?? [];
+      setTutors((prev) => {
+        if (!append) return content;
+        const merged = [...prev, ...content];
+        if (merged.length <= MAX_ITEMS_IN_MEMORY) return merged;
+        return merged.slice(merged.length - MAX_ITEMS_IN_MEMORY);
+      });
+      setPage(response.number ?? targetPage);
+      setTotalPages(response.totalPages ?? 0);
     } finally {
       setLoading(false);
+      loadingRef.current = false;
     }
   }
 
@@ -46,17 +69,13 @@ export function TutorsPage() {
   }, [naming]);
 
   useEffect(() => {
-    load();
-  }, []);
+    const timer = setTimeout(() => {
+      load(0, query);
+    }, 250);
+    return () => clearTimeout(timer);
+  }, [query]);
 
-  const filteredTutors = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return tutors;
-    return tutors.filter((t) => {
-      const hay = `${t.name} ${t.document ?? ""} ${t.phone ?? ""} ${t.email ?? ""}`.toLowerCase();
-      return hay.includes(q);
-    });
-  }, [tutors, query]);
+  const hasMore = page + 1 < totalPages;
 
   async function handleDelete(id: number) {
     if (!canDeleteTutor(myRole)) return;
@@ -82,7 +101,12 @@ export function TutorsPage() {
       });
       return;
     }
-    await load();
+    await load(0, query);
+  }
+
+  async function handleLoadMore() {
+    if (!hasMore || loading) return;
+    await load(page + 1, query, true);
   }
 
   if (!allowed) {
@@ -121,11 +145,13 @@ export function TutorsPage() {
 
       <section className={styles.card}>
         <TutorsTable
-          tutors={filteredTutors}
+          tutors={tutors}
           loading={loading}
+          hasMore={hasMore}
           currentRole={myRole}
           onEdit={(id) => setModal({ open: true, tutorId: id })}
           onDelete={handleDelete}
+          onLoadMore={handleLoadMore}
         />
       </section>
 
@@ -135,7 +161,7 @@ export function TutorsPage() {
           onClose={() => setModal({ open: false })}
           onSaved={async () => {
             setModal({ open: false });
-            await load();
+            await load(0, query);
           }}
         />
       )}

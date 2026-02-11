@@ -8,9 +8,11 @@ import { TutorStatusBadge } from "./TutorStatusBadge";
 type Props = {
   tutors: TutorListItemResponse[];
   loading: boolean;
+  hasMore: boolean;
   currentRole?: Role;
   onEdit: (id: number) => void;
   onDelete: (id: number) => void;
+  onLoadMore: () => void;
 };
 
 function canDeleteTutor(role?: Role) {
@@ -31,13 +33,22 @@ function formatCpf(value?: string) {
   return `${p1}.${p2}.${p3}-${p4}`;
 }
 
-export function TutorsTable({ tutors, loading, currentRole, onEdit, onDelete }: Props) {
+export function TutorsTable({ tutors, loading, hasMore, currentRole, onEdit, onDelete, onLoadMore }: Props) {
   const naming = useNaming();
   if (loading) return <div className={styles.state}>{naming.getLabel("loading")}</div>;
   if (!tutors.length) return <div className={styles.state}>{naming.getMessage("noTutorsFound")}</div>;
 
   return (
-    <div className={styles.tableWrap}>
+    <div
+      className={styles.tableWrap}
+      onScroll={(e) => {
+        if (!hasMore || loading) return;
+        const target = e.currentTarget;
+        const threshold = 80;
+        const reachedBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - threshold;
+        if (reachedBottom) onLoadMore();
+      }}
+    >
       <table className={styles.table}>
         <thead>
           <tr>
@@ -88,6 +99,7 @@ export function TutorsTable({ tutors, loading, currentRole, onEdit, onDelete }: 
           ))}
         </tbody>
       </table>
+      {hasMore && <div className={styles.moreState}>{naming.getLabel("loading")}</div>}
     </div>
   );
 }

@@ -1,0 +1,123 @@
+.panel {
+  background: var(--card-bg);
+  border: var(--border-1) solid var(--card-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-1);
+  margin-top: 0.5rem;
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.state {
+  background: var(--card-bg);
+  border: var(--border-1) solid var(--card-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-1);
+  padding: var(--space-5);
+  color: var(--text-muted);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--text-lg);
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.kpiCard {
+  border: var(--border-1) solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  padding: var(--space-2) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.kpiLabel {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.kpiValue {
+  font-size: var(--text-2xl);
+  line-height: 1;
+}
+
+.roleArea {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.roleTitle {
+  margin: 0;
+  font-size: var(--text-base);
+}
+
+.roleList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.roleRow {
+  display: grid;
+  grid-template-columns: minmax(120px, 180px) 1fr auto;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.roleName {
+  color: var(--text-muted);
+}
+
+.barTrack {
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--btn-bg);
+}
+
+.roleCount {
+  min-width: 2ch;
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .kpiGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .roleRow {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+
+  .roleCount {
+    text-align: left;
+  }
+}

@@ -39,6 +39,7 @@ export const pt = {
     areYouSure: "Tem certeza que deseja",
     noUsersFound: "Nenhum usuário encontrado.",
     noTutorsFound: "Nenhum tutor encontrado.",
+    userSummarySubtitle: "Visão geral para acompanhamento rápido dos usuários.",
   },
   titles: {
     home: "Início",
@@ -60,6 +61,7 @@ export const pt = {
     errorSavingUser: "Erro ao salvar usuário",
     errorDeletingTutor: "Erro ao excluir tutor",
     errorSavingTutor: "Erro ao salvar tutor",
+    userSummary: "Resumo de usuários",
   },
   auth: {
     title: "Login",
@@ -89,6 +91,10 @@ export const pt = {
     editProfile: "Editar perfil",
     activate: "Ativar",
     deactivate: "Desativar",
+    previous: "Anterior",
+    next: "Próxima",
+    total: "Total",
+    usersByRole: "Usuários por função",
     delete: "Excluir",
     ok: "OK",
     document: "Documento",
