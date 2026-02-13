@@ -128,6 +128,102 @@ export type UpdateTutorRequest = {
   address?: TutorAddressRequest;
 };
 
+export type PetSpecies =
+  | "DOG"
+  | "CAT"
+  | "BIRD"
+  | "RABBIT"
+  | "HAMSTER"
+  | "GUINEA_PIG"
+  | "FERRET"
+  | "REPTILE"
+  | "SNAKE"
+  | "LIZARD"
+  | "TURTLE"
+  | "FISH"
+  | "HORSE"
+  | "COW"
+  | "PIG"
+  | "OTHER";
+
+export type PetSex = "MALE" | "FEMALE" | "UNKNOWN";
+
+export const PET_SPECIES_OPTIONS: readonly PetSpecies[] = [
+  "DOG",
+  "CAT",
+  "BIRD",
+  "RABBIT",
+  "HAMSTER",
+  "GUINEA_PIG",
+  "FERRET",
+  "REPTILE",
+  "SNAKE",
+  "LIZARD",
+  "TURTLE",
+  "FISH",
+  "HORSE",
+  "COW",
+  "PIG",
+  "OTHER",
+];
+
+export const PET_SEX_OPTIONS: readonly PetSex[] = ["MALE", "FEMALE", "UNKNOWN"];
+
+export type PetListItemResponse = {
+  id: number;
+  tutorId: number;
+  tutorName?: string;
+  name: string;
+  species: PetSpecies;
+  active: boolean;
+};
+
+export type PetResponse = {
+  id: number;
+  tutorId: number;
+  name: string;
+  species: PetSpecies;
+  breed?: string;
+  sex?: PetSex;
+  birthDate?: string;
+  weightKg?: number;
+  notes?: string;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type CreatePetRequest = {
+  tutorId: number;
+  name: string;
+  species: PetSpecies;
+  breed?: string;
+  sex?: PetSex;
+  birthDate?: string;
+  weightKg?: number;
+  notes?: string;
+};
+
+export type UpdatePetRequest = {
+  tutorId: number;
+  name: string;
+  species: PetSpecies;
+  breed?: string;
+  sex?: PetSex;
+  birthDate?: string;
+  weightKg?: number;
+  notes?: string;
+};
+
+export type PetStatsResponse = {
+  total: number;
+  active: number;
+  inactive: number;
+  dogs: number;
+  cats: number;
+  others: number;
+};
+
 export type PageResponse<T> = {
   content: T[];
   totalElements: number;

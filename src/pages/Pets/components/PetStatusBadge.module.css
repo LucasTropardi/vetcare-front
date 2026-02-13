@@ -1,0 +1,18 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.55rem;
+  border-radius: var(--radius-pill);
+  border: var(--border-1) solid var(--border);
+  font-size: var(--text-xs);
+}
+
+.badge[data-active="true"] {
+  background: var(--success-bg);
+  border-color: rgba(22, 163, 74, 0.35);
+}
+
+.badge[data-active="false"] {
+  background: rgba(245, 158, 11, 0.14);
+  border-color: rgba(245, 158, 11, 0.35);
+}
