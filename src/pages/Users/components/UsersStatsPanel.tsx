@@ -2,9 +2,17 @@ import styles from "./UsersStatsPanel.module.css";
 import type { Role, UserStatsResponse } from "../../../services/api/types";
 import { useNaming } from "../../../i18n/useNaming";
 
+export type UsersStatusFilter = "ALL" | "ACTIVE" | "INACTIVE";
+export type UsersRoleFilter = "ALL" | Role;
+
 type Props = {
   stats?: UserStatsResponse | null;
   loading: boolean;
+  statusFilter: UsersStatusFilter;
+  roleFilter: UsersRoleFilter;
+  onResetFilters: () => void;
+  onStatusFilterChange: (filter: Exclude<UsersStatusFilter, "ALL">) => void;
+  onRoleFilterChange: (filter: Role) => void;
 };
 
 type RoleStat = {
@@ -12,7 +20,15 @@ type RoleStat = {
   count: number;
 };
 
-export function UsersStatsPanel({ stats, loading }: Props) {
+export function UsersStatsPanel({
+  stats,
+  loading,
+  statusFilter,
+  roleFilter,
+  onResetFilters,
+  onStatusFilterChange,
+  onRoleFilterChange,
+}: Props) {
   const naming = useNaming();
 
   if (loading) {
@@ -28,47 +44,47 @@ export function UsersStatsPanel({ stats, loading }: Props) {
     { role: "VET", count: stats.vet },
     { role: "RECEPTION", count: stats.reception },
   ];
-
-  const maxRoleCount = Math.max(...roleStats.map((item) => item.count), 1);
+  const totalSelected = statusFilter === "ALL" && roleFilter === "ALL";
 
   return (
     <section className={styles.panel}>
-      <header className={styles.header}>
-        <h2 className={styles.title}>{naming.getTitle("userSummary")}</h2>
-        <p className={styles.subtitle}>{naming.getMessage("userSummarySubtitle")}</p>
-      </header>
-
-      <div className={styles.kpiGrid}>
-        <article className={styles.kpiCard}>
+      <h2 className={styles.title}>{naming.getTitle("userSummary")}</h2>
+      <div className={styles.grid}>
+        <button
+          type="button"
+          className={`${styles.kpiCard} ${totalSelected ? styles.kpiCardActive : ""}`}
+          onClick={onResetFilters}
+        >
           <span className={styles.kpiLabel}>{naming.getLabel("total")}</span>
           <strong className={styles.kpiValue}>{stats.total}</strong>
-        </article>
-        <article className={styles.kpiCard}>
+        </button>
+        <button
+          type="button"
+          className={`${styles.kpiCard} ${statusFilter === "ACTIVE" ? styles.kpiCardActive : ""}`}
+          onClick={() => onStatusFilterChange("ACTIVE")}
+        >
           <span className={styles.kpiLabel}>{naming.getLabel("active")}</span>
           <strong className={styles.kpiValue}>{stats.active}</strong>
-        </article>
-        <article className={styles.kpiCard}>
+        </button>
+        <button
+          type="button"
+          className={`${styles.kpiCard} ${statusFilter === "INACTIVE" ? styles.kpiCardActive : ""}`}
+          onClick={() => onStatusFilterChange("INACTIVE")}
+        >
           <span className={styles.kpiLabel}>{naming.getLabel("inactive")}</span>
           <strong className={styles.kpiValue}>{stats.inactive}</strong>
-        </article>
-      </div>
-
-      <div className={styles.roleArea}>
-        <h3 className={styles.roleTitle}>{naming.getLabel("usersByRole")}</h3>
-        <div className={styles.roleList}>
-          {roleStats.map((item) => (
-            <div className={styles.roleRow} key={item.role}>
-              <span className={styles.roleName}>{naming.getRole(item.role)}</span>
-              <div className={styles.barTrack}>
-                <div
-                  className={styles.barFill}
-                  style={{ width: `${(item.count / maxRoleCount) * 100}%` }}
-                />
-              </div>
-              <strong className={styles.roleCount}>{item.count}</strong>
-            </div>
-          ))}
-        </div>
+        </button>
+        {roleStats.map((item) => (
+          <button
+            type="button"
+            className={`${styles.kpiCard} ${roleFilter === item.role ? styles.kpiCardActive : ""}`}
+            key={item.role}
+            onClick={() => onRoleFilterChange(item.role)}
+          >
+            <span className={styles.kpiLabel}>{naming.getRole(item.role)}</span>
+            <strong className={styles.kpiValue}>{item.count}</strong>
+          </button>
+        ))}
       </div>
     </section>
   );

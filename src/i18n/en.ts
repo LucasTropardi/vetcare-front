@@ -62,6 +62,7 @@ export const en = {
     errorDeletingTutor: "Error deleting tutor",
     errorSavingTutor: "Error saving tutor",
     userSummary: "User summary",
+    tutorSummary: "Tutors summary",
   },
   auth: {
     title: "Sign in",
@@ -95,6 +96,9 @@ export const en = {
     next: "Next",
     total: "Total",
     usersByRole: "Users by role",
+    withCompany: "With company",
+    withPet: "With pet",
+    withoutContact: "Without contact",
     delete: "Delete",
     ok: "OK",
     document: "Document",

@@ -3,6 +3,7 @@ import type {
   CreateTutorRequest,
   PageResponse,
   TutorListItemResponse,
+  TutorStatsResponse,
   TutorResponse,
   UpdateTutorRequest,
 } from "./types";
@@ -17,10 +18,19 @@ export type ListTutorsParams = {
   size?: number;
   sort?: string | string[];
   query?: string;
+  active?: boolean;
+  hasCompany?: boolean;
+  hasPet?: boolean;
+  hasContact?: boolean;
 };
 
 export async function listTutors(params?: ListTutorsParams): Promise<PageResponse<TutorListItemResponse>> {
   const { data } = await http.get<PageResponse<TutorListItemResponse>>("/api/tutors", { params });
+  return data;
+}
+
+export async function getTutorStats(): Promise<TutorStatsResponse> {
+  const { data } = await http.get<TutorStatsResponse>("/api/tutors/stats");
   return data;
 }
 

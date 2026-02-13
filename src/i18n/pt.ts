@@ -62,6 +62,7 @@ export const pt = {
     errorDeletingTutor: "Erro ao excluir tutor",
     errorSavingTutor: "Erro ao salvar tutor",
     userSummary: "Resumo de usuários",
+    tutorSummary: "Resumo de tutores",
   },
   auth: {
     title: "Login",
@@ -95,6 +96,9 @@ export const pt = {
     next: "Próxima",
     total: "Total",
     usersByRole: "Usuários por função",
+    withCompany: "Com empresa",
+    withPet: "Com pet",
+    withoutContact: "Sem contato",
     delete: "Excluir",
     ok: "OK",
     document: "Documento",

@@ -2,12 +2,17 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./TutorsPage.module.css";
 import { TutorsTable } from "./components/TutorsTable";
 import { TutorFormModal } from "./components/TutorFormModal";
+import {
+  TutorsStatsPanel,
+  type TutorInsightFilter,
+  type TutorStatusFilter,
+} from "./components/TutorsStatsPanel";
 import { useNaming } from "../../i18n/useNaming";
 
 import { useConfirmStore } from "../../store/confirm.store";
 import { useAuthStore } from "../../store/auth.store";
-import type { Role, TutorListItemResponse } from "../../services/api/types";
-import { deleteTutor, listTutors } from "../../services/api/tutors.service";
+import type { Role, TutorListItemResponse, TutorStatsResponse } from "../../services/api/types";
+import { deleteTutor, getTutorStats, listTutors } from "../../services/api/tutors.service";
 import { getApiErrorMessage } from "../../services/api/errors";
 import { getMaxListItems } from "../../config/listMemory";
 
@@ -28,16 +33,26 @@ export function TutorsPage() {
 
   const [loading, setLoading] = useState(false);
   const [tutors, setTutors] = useState<TutorListItemResponse[]>([]);
+  const [stats, setStats] = useState<TutorStatsResponse | null>(null);
+  const [statsLoading, setStatsLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [query, setQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<TutorStatusFilter>("ALL");
+  const [insightFilter, setInsightFilter] = useState<TutorInsightFilter>("ALL");
   const [modal, setModal] = useState<{ open: boolean; tutorId?: number }>({ open: false });
 
   const myRole = me?.role;
   const allowed = useMemo(() => canManageTutors(myRole), [myRole]);
   const loadingRef = useRef(false);
 
-  async function load(targetPage = page, targetQuery = query, append = false) {
+  async function load(
+    targetPage = page,
+    targetQuery = query,
+    targetStatusFilter = statusFilter,
+    targetInsightFilter = insightFilter,
+    append = false
+  ) {
     if (loadingRef.current) return;
     loadingRef.current = true;
     setLoading(true);
@@ -48,6 +63,10 @@ export function TutorsPage() {
         size: PAGE_SIZE,
         sort: "name,asc",
         query: normalizedQuery || undefined,
+        active: targetStatusFilter === "ACTIVE" ? true : targetStatusFilter === "INACTIVE" ? false : undefined,
+        hasCompany: targetInsightFilter === "WITH_COMPANY" ? true : undefined,
+        hasPet: targetInsightFilter === "WITH_PET" ? true : undefined,
+        hasContact: targetInsightFilter === "WITHOUT_CONTACT" ? false : undefined,
       });
       const content = response.content ?? [];
       setTutors((prev) => {
@@ -64,16 +83,33 @@ export function TutorsPage() {
     }
   }
 
+  async function loadStats() {
+    setStatsLoading(true);
+    try {
+      const response = await getTutorStats();
+      setStats(response);
+    } catch (error) {
+      console.log("Error loading tutor stats:", error);
+      setStats(null);
+    } finally {
+      setStatsLoading(false);
+    }
+  }
+
   useEffect(() => {
     document.title = `${naming.getTitle("tutors")} • ${naming.getApp("name")}`;
   }, [naming]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      load(0, query);
+      load(0, query, statusFilter, insightFilter);
     }, 250);
     return () => clearTimeout(timer);
-  }, [query]);
+  }, [query, statusFilter, insightFilter]);
+
+  useEffect(() => {
+    loadStats();
+  }, []);
 
   const hasMore = page + 1 < totalPages;
 
@@ -101,12 +137,12 @@ export function TutorsPage() {
       });
       return;
     }
-    await load(0, query);
+    await Promise.all([load(0, query, statusFilter, insightFilter), loadStats()]);
   }
 
   async function handleLoadMore() {
     if (!hasMore || loading) return;
-    await load(page + 1, query, true);
+    await load(page + 1, query, statusFilter, insightFilter, true);
   }
 
   if (!allowed) {
@@ -143,6 +179,23 @@ export function TutorsPage() {
         </div>
       </header>
 
+      <TutorsStatsPanel
+        stats={stats}
+        loading={statsLoading}
+        statusFilter={statusFilter}
+        insightFilter={insightFilter}
+        onResetFilters={() => {
+          setStatusFilter("ALL");
+          setInsightFilter("ALL");
+        }}
+        onStatusFilterChange={(filter) => {
+          setStatusFilter((prev) => (prev === filter ? "ALL" : filter));
+        }}
+        onInsightFilterChange={(filter) => {
+          setInsightFilter((prev) => (prev === filter ? "ALL" : filter));
+        }}
+      />
+
       <section className={styles.card}>
         <TutorsTable
           tutors={tutors}
@@ -161,7 +214,7 @@ export function TutorsPage() {
           onClose={() => setModal({ open: false })}
           onSaved={async () => {
             setModal({ open: false });
-            await load(0, query);
+            await Promise.all([load(0, query, statusFilter, insightFilter), loadStats()]);
           }}
         />
       )}

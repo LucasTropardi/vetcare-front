@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./UsersPage.module.css";
 import { UsersTable } from "./components/UsersTable";
 import { UserFormModal } from "./components/UserFormModal";
-import { UsersStatsPanel } from "./components/UsersStatsPanel";
+import { UsersStatsPanel, type UsersRoleFilter, type UsersStatusFilter } from "./components/UsersStatsPanel";
 import { useNaming } from "../../i18n/useNaming";
 
 import { useConfirmStore } from "../../store/confirm.store";
@@ -36,6 +36,8 @@ export function UsersPage() {
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [query, setQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<UsersStatusFilter>("ALL");
+  const [roleFilter, setRoleFilter] = useState<UsersRoleFilter>("ALL");
   const [modal, setModal] = useState<{ open: boolean; userId?: number }>({ open: false });
 
   const myRole = me?.role;
@@ -89,12 +91,15 @@ export function UsersPage() {
 
   const filteredUsers = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return users;
     return users.filter((u) => {
+      if (statusFilter === "ACTIVE" && !u.active) return false;
+      if (statusFilter === "INACTIVE" && u.active) return false;
+      if (roleFilter !== "ALL" && u.role !== roleFilter) return false;
+      if (!q) return true;
       const hay = `${u.name} ${u.email} ${u.role}`.toLowerCase();
       return hay.includes(q);
     });
-  }, [users, query]);
+  }, [users, query, roleFilter, statusFilter]);
 
   async function handleDelete(id: number, targetRole?: Role) {
     if (!canEditTarget(myRole, targetRole)) return;
@@ -200,6 +205,23 @@ export function UsersPage() {
         </div>
       </header>
 
+      <UsersStatsPanel
+        stats={stats}
+        loading={statsLoading}
+        statusFilter={statusFilter}
+        roleFilter={roleFilter}
+        onResetFilters={() => {
+          setStatusFilter("ALL");
+          setRoleFilter("ALL");
+        }}
+        onStatusFilterChange={(filter) => {
+          setStatusFilter((prev) => (prev === filter ? "ALL" : filter));
+        }}
+        onRoleFilterChange={(filter) => {
+          setRoleFilter((prev) => (prev === filter ? "ALL" : filter));
+        }}
+      />
+
       <section className={styles.card}>
         <UsersTable
           users={filteredUsers}
@@ -213,8 +235,6 @@ export function UsersPage() {
           canEditTarget={canEditTarget}
         />
       </section>
-
-      <UsersStatsPanel stats={stats} loading={statsLoading} />
 
       {modal.open && (
         <UserFormModal

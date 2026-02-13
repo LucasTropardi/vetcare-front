@@ -91,6 +91,15 @@ export type TutorListItemResponse = {
   active: boolean;
 };
 
+export type TutorStatsResponse = {
+  total: number;
+  active: number;
+  inactive: number;
+  withCompany: number;
+  withPet: number;
+  withoutContact: number;
+};
+
 export type TutorResponse = {
   id: number;
   name: string;
