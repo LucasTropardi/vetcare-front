@@ -7,6 +7,8 @@ import { HomePage } from "../pages/Home/HomePage";
 import { UsersPage } from "../pages/Users/UsersPage";
 import { TutorsPage } from "../pages/Tutors/TutorsPage";
 import { PetsPage } from "../pages/Pets/PetsPage";
+import { CustomerCompaniesPage } from "../pages/CustomerCompanies/CustomerCompaniesPage";
+import { CompanyProfilePage } from "../pages/CompanyProfile/CompanyProfilePage";
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +26,8 @@ export const router = createBrowserRouter([
       {  path: "/users", element: <UsersPage />},
       {  path: "/tutors", element: <TutorsPage />},
       {  path: "/pets", element: <PetsPage />},
+      { path: "/customer-companies", element: <CustomerCompaniesPage /> },
+      { path: "/company-profile", element: <CompanyProfilePage /> },
     ],
   },
 ]);

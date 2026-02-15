@@ -224,6 +224,175 @@ export type PetStatsResponse = {
   others: number;
 };
 
+export type IeIndicator = "CONTRIBUTOR" | "EXEMPT" | "NON_CONTRIBUTOR";
+export type Crt = "SIMPLES_NACIONAL" | "REGIME_NORMAL";
+
+export const IE_INDICATOR_OPTIONS: readonly IeIndicator[] = [
+  "CONTRIBUTOR",
+  "EXEMPT",
+  "NON_CONTRIBUTOR",
+];
+
+export const CRT_OPTIONS: readonly Crt[] = ["SIMPLES_NACIONAL", "REGIME_NORMAL"];
+
+export type CustomerCompanyAddressRequest = {
+  zipCode?: string;
+  street?: string;
+  number?: string;
+  complement?: string;
+  neighborhood?: string;
+  cityName?: string;
+  cityIbge?: string;
+  stateUf?: string;
+  country?: string;
+};
+
+export type CustomerCompanyAddressResponse = {
+  customerCompanyId: number;
+  zipCode?: string;
+  street?: string;
+  number?: string;
+  complement?: string;
+  neighborhood?: string;
+  cityName?: string;
+  cityIbge?: string;
+  stateUf?: string;
+  country?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type CustomerCompanyFiscalRequest = {
+  ie?: string;
+  ieIndicator: IeIndicator;
+};
+
+export type CustomerCompanyFiscalResponse = {
+  customerCompanyId: number;
+  ie?: string;
+  ieIndicator: IeIndicator;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type CustomerCompanyListItemResponse = {
+  id: number;
+  tutorId: number;
+  legalName: string;
+  tradeName?: string;
+  cnpj: string;
+  active: boolean;
+};
+
+export type CustomerCompanyResponse = {
+  id: number;
+  tutorId: number;
+  legalName: string;
+  tradeName?: string;
+  cnpj: string;
+  phone?: string;
+  email?: string;
+  active: boolean;
+  address?: CustomerCompanyAddressResponse | null;
+  fiscal?: CustomerCompanyFiscalResponse | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type CreateCustomerCompanyRequest = {
+  tutorId: number;
+  legalName: string;
+  tradeName?: string;
+  cnpj: string;
+  phone?: string;
+  email?: string;
+  address?: CustomerCompanyAddressRequest;
+  fiscal?: CustomerCompanyFiscalRequest;
+};
+
+export type UpdateCustomerCompanyRequest = {
+  legalName: string;
+  tradeName?: string;
+  cnpj: string;
+  phone?: string;
+  email?: string;
+  address?: CustomerCompanyAddressRequest;
+  fiscal?: CustomerCompanyFiscalRequest;
+};
+
+export type CustomerCompanyStatsResponse = {
+  total: number;
+  active: number;
+  inactive: number;
+  withAddress: number;
+  withFiscal: number;
+  withoutContact: number;
+};
+
+export type CompanyProfileAddressRequest = {
+  zipCode: string;
+  street: string;
+  number?: string;
+  complement?: string;
+  neighborhood?: string;
+  cityName: string;
+  cityIbge?: string;
+  stateUf: string;
+  country?: string;
+};
+
+export type CompanyProfileAddressResponse = {
+  companyId: number;
+  zipCode: string;
+  street: string;
+  number?: string;
+  complement?: string;
+  neighborhood?: string;
+  cityName: string;
+  cityIbge?: string;
+  stateUf: string;
+  country?: string;
+};
+
+export type CompanyProfileFiscalRequest = {
+  ie?: string;
+  ieIndicator: IeIndicator;
+  crt: Crt;
+};
+
+export type CompanyProfileFiscalResponse = {
+  companyId: number;
+  ie?: string;
+  ieIndicator: IeIndicator;
+  crt: Crt;
+};
+
+export type CompanyProfileResponse = {
+  id: number;
+  legalName: string;
+  tradeName?: string;
+  cnpj: string;
+  phone?: string;
+  email?: string;
+  headquarter: boolean;
+  parentCompanyId?: number | null;
+  address?: CompanyProfileAddressResponse | null;
+  fiscalConfig?: CompanyProfileFiscalResponse | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type UpdateCompanyProfileRequest = {
+  legalName: string;
+  tradeName?: string;
+  cnpj: string;
+  phone?: string;
+  email?: string;
+  headquarter: boolean;
+  address?: CompanyProfileAddressRequest;
+  fiscalConfig?: CompanyProfileFiscalRequest;
+};
+
 export type PageResponse<T> = {
   content: T[];
   totalElements: number;

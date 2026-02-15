@@ -1,0 +1,235 @@
+.page {
+  --page-safe-height: calc(100dvh - 108px);
+  padding: var(--space-6);
+  min-height: 0;
+  height: var(--page-safe-height);
+  overflow: auto;
+  display: grid;
+  gap: var(--space-3);
+  background:
+    radial-gradient(circle at 5% 0%, rgba(14, 116, 144, 0.12), transparent 45%),
+    radial-gradient(circle at 95% 20%, rgba(30, 64, 175, 0.1), transparent 40%),
+    var(--surface);
+}
+
+.loading {
+  padding: var(--space-6);
+  color: var(--text-muted);
+}
+
+.hero {
+  border-radius: var(--radius-xl);
+  border: var(--border-1) solid color-mix(in srgb, var(--btn-bg) 35%, var(--border));
+  padding: var(--space-5);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--btn-bg) 8%, var(--surface)) 0%, var(--surface) 100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--text-3xl);
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin: var(--space-1) 0 0;
+  color: var(--text-muted);
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.badge,
+.badgeMuted {
+  border-radius: var(--radius-pill);
+  border: var(--border-1) solid var(--border);
+  padding: 0.35rem 0.8rem;
+  font-size: var(--text-sm);
+}
+
+.badge[data-ok="true"] {
+  border-color: rgba(22, 163, 74, 0.35);
+  background: rgba(22, 163, 74, 0.12);
+}
+
+.badge[data-ok="false"] {
+  border-color: rgba(245, 158, 11, 0.35);
+  background: rgba(245, 158, 11, 0.12);
+}
+
+.badgeMuted {
+  background: var(--surface-2);
+}
+
+.form {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.card {
+  background: color-mix(in srgb, var(--card-bg) 92%, white 8%);
+  border: var(--border-1) solid var(--card-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-1);
+  padding: var(--space-4);
+  display: grid;
+  gap: var(--space-3);
+}
+
+.card h2 {
+  margin: 0;
+  font-size: var(--text-lg);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.field span {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.field input,
+.field select {
+  height: 42px;
+  border-radius: var(--radius-md);
+  border: var(--border-1) solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--input-text);
+  padding: 0 var(--space-3);
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  box-shadow: var(--focus);
+  border-color: transparent;
+}
+
+.field input:disabled,
+.field select:disabled {
+  opacity: 0.72;
+}
+
+.error {
+  color: var(--danger);
+  font-size: var(--text-xs);
+}
+
+.toggleField {
+  align-self: end;
+}
+
+.toggle {
+  height: 42px;
+  border-radius: var(--radius-pill);
+  border: var(--border-1) solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  padding: 0 var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+}
+
+.toggle strong {
+  margin-left: 0.75rem;
+  min-width: 3ch;
+  text-align: left;
+}
+
+.toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.toggleKnob {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--text-muted);
+  transition: transform 0.2s ease;
+}
+
+.toggle[data-active="true"] .toggleKnob {
+  transform: translateX(12px);
+  background: var(--btn-bg);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 0 var(--space-1) var(--space-2);
+}
+
+.meta,
+.readOnly {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.primaryBtn {
+  height: 42px;
+  min-width: 160px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  cursor: pointer;
+  font: inherit;
+}
+
+.primaryBtn:hover {
+  background: var(--btn-bg-hover);
+}
+
+.primaryBtn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+@media (max-width: 980px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: var(--space-4);
+    height: auto;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .primaryBtn {
+    width: 100%;
+  }
+}

@@ -1,6 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./Sidebar.module.css";
-import { HouseIcon, SignOutIcon, CaretUpDownIcon, UserCircleIcon, UsersThreeIcon, PawPrintIcon } from "@phosphor-icons/react";
+import {
+  HouseIcon,
+  SignOutIcon,
+  CaretUpDownIcon,
+  UserCircleIcon,
+  UsersThreeIcon,
+  PawPrintIcon,
+  BuildingsIcon,
+} from "@phosphor-icons/react";
 import { useUiStore } from "../../store/ui.store";
 import { useAuthStore } from "../../store/auth.store";
 import { useNavigate, Link } from "react-router-dom";
@@ -101,6 +109,16 @@ export function Sidebar() {
         <Link className={styles.item} to="/pets" onClick={closeSidebarOnMobile}>
           <PawPrintIcon size={18} />
           {!collapsed && <span>{naming.getTitle("pets")}</span>}
+        </Link>
+
+        <Link className={styles.item} to="/customer-companies" onClick={closeSidebarOnMobile}>
+          <BuildingsIcon size={18} />
+          {!collapsed && <span>{naming.getTitle("customerCompanies")}</span>}
+        </Link>
+
+        <Link className={styles.item} to="/company-profile" onClick={closeSidebarOnMobile}>
+          <BuildingsIcon size={18} />
+          {!collapsed && <span>{naming.getTitle("companyProfile")}</span>}
         </Link>
       </nav>
 
