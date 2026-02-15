@@ -8,6 +8,17 @@ import {
   UsersThreeIcon,
   PawPrintIcon,
   BuildingsIcon,
+  PackageIcon,
+  CaretDownIcon,
+  CaretRightIcon,
+  ClipboardTextIcon,
+  ArrowsClockwiseIcon,
+  PlusCircleIcon,
+  MagnifyingGlassIcon,
+  StethoscopeIcon,
+  StorefrontIcon,
+  CurrencyCircleDollarIcon,
+  ChartBarIcon,
 } from "@phosphor-icons/react";
 import { useUiStore } from "../../store/ui.store";
 import { useAuthStore } from "../../store/auth.store";
@@ -17,6 +28,8 @@ import { useConfirmStore } from "../../store/confirm.store";
 import { useNaming } from "../../i18n/useNaming";
 
 const MOBILE_BREAKPOINT = 900;
+
+type SidebarGroup = "registration" | "stock" | "operations" | "finance" | "reports";
 
 function isMobileNow() {
   return window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT}px)`).matches;
@@ -33,6 +46,14 @@ export function Sidebar() {
   const clearAuth = useAuthStore((s) => s.clearAuth);
   const navigate = useNavigate();
 
+  const [groupsOpen, setGroupsOpen] = useState<Record<SidebarGroup, boolean>>({
+    registration: true,
+    stock: true,
+    operations: true,
+    finance: true,
+    reports: true,
+  });
+
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement | null>(null);
   const setMeModalOpen = useUiStore((s) => s.setMeModalOpen);
@@ -40,11 +61,18 @@ export function Sidebar() {
   const confirm = useConfirmStore((s) => s.confirm);
 
   const isAdmin = me?.role === "ADMIN";
+  const vetPwaUrl = import.meta.env.VITE_VET_PWA_URL as string | undefined;
+  const pdvPwaUrl = import.meta.env.VITE_PDV_PWA_URL as string | undefined;
 
   function closeSidebarOnMobile() {
     if (!isMobileNow()) return;
     setCollapsed(true);
     setUserMenuOpen(false);
+  }
+
+  function toggleGroup(group: SidebarGroup) {
+    if (collapsed) return;
+    setGroupsOpen((prev) => ({ ...prev, [group]: !prev[group] }));
   }
 
   async function handleLogout() {
@@ -95,31 +123,146 @@ export function Sidebar() {
         {!collapsed && <div className={styles.title}>{naming.getTitle("menu")}</div>}
       </div>
 
+      <div className={styles.menuArea}>
       <nav className={styles.nav}>
         <Link className={styles.item} to="/" onClick={closeSidebarOnMobile}>
           <HouseIcon size={18} />
           {!collapsed && <span>{naming.getTitle("home")}</span>}
         </Link>
 
-        <Link className={styles.item} to="/tutors" onClick={closeSidebarOnMobile}>
-          <UsersThreeIcon size={18} />
-          {!collapsed && <span>{naming.getTitle("tutors")}</span>}
-        </Link>
+        <div className={styles.group}>
+          <button className={styles.groupTrigger} onClick={() => toggleGroup("registration")}>
+            <ClipboardTextIcon size={18} />
+            {!collapsed && <span>{naming.t("sidebar.registration")}</span>}
+            {!collapsed && (groupsOpen.registration ? <CaretDownIcon size={14} /> : <CaretRightIcon size={14} />)}
+          </button>
+          {(collapsed || groupsOpen.registration) && (
+            <div className={styles.submenu}>
+              <Link className={styles.item} to="/tutors" onClick={closeSidebarOnMobile}>
+                <UsersThreeIcon size={18} />
+                {!collapsed && <span>{naming.getTitle("tutors")}</span>}
+              </Link>
 
-        <Link className={styles.item} to="/pets" onClick={closeSidebarOnMobile}>
-          <PawPrintIcon size={18} />
-          {!collapsed && <span>{naming.getTitle("pets")}</span>}
-        </Link>
+              <Link className={styles.item} to="/pets" onClick={closeSidebarOnMobile}>
+                <PawPrintIcon size={18} />
+                {!collapsed && <span>{naming.getTitle("pets")}</span>}
+              </Link>
 
-        <Link className={styles.item} to="/customer-companies" onClick={closeSidebarOnMobile}>
-          <BuildingsIcon size={18} />
-          {!collapsed && <span>{naming.getTitle("customerCompanies")}</span>}
-        </Link>
+              <Link className={styles.item} to="/customer-companies" onClick={closeSidebarOnMobile}>
+                <BuildingsIcon size={18} />
+                {!collapsed && <span>{naming.getTitle("customerCompanies")}</span>}
+              </Link>
 
-        <Link className={styles.item} to="/company-profile" onClick={closeSidebarOnMobile}>
-          <BuildingsIcon size={18} />
-          {!collapsed && <span>{naming.getTitle("companyProfile")}</span>}
-        </Link>
+              <Link className={styles.item} to="/products" onClick={closeSidebarOnMobile}>
+                <PackageIcon size={18} />
+                {!collapsed && <span>{naming.getTitle("products")}</span>}
+              </Link>
+
+              <Link className={styles.item} to="/company-profile" onClick={closeSidebarOnMobile}>
+                <BuildingsIcon size={18} />
+                {!collapsed && <span>{naming.getTitle("companyProfile")}</span>}
+              </Link>
+            </div>
+          )}
+        </div>
+
+        <div className={styles.group}>
+          <button className={styles.groupTrigger} onClick={() => toggleGroup("stock")}>
+            <ArrowsClockwiseIcon size={18} />
+            {!collapsed && <span>{naming.t("sidebar.stock")}</span>}
+            {!collapsed && (groupsOpen.stock ? <CaretDownIcon size={14} /> : <CaretRightIcon size={14} />)}
+          </button>
+          {(collapsed || groupsOpen.stock) && (
+            <div className={styles.submenu}>
+              <Link className={styles.item} to="/stock/balances" onClick={closeSidebarOnMobile}>
+                <PackageIcon size={18} />
+                {!collapsed && <span>{naming.t("sidebar.stockBalances")}</span>}
+              </Link>
+
+              <Link className={styles.item} to="/stock/movements" onClick={closeSidebarOnMobile}>
+                <ArrowsClockwiseIcon size={18} />
+                {!collapsed && <span>{naming.t("sidebar.stockMovements")}</span>}
+              </Link>
+
+              <Link className={styles.item} to="/stock/new-movement" onClick={closeSidebarOnMobile}>
+                <PlusCircleIcon size={18} />
+                {!collapsed && <span>{naming.t("sidebar.stockNewMovement")}</span>}
+              </Link>
+
+              <Link className={styles.item} to="/stock/product-view" onClick={closeSidebarOnMobile}>
+                <MagnifyingGlassIcon size={18} />
+                {!collapsed && <span>{naming.t("sidebar.stockProductDetail")}</span>}
+              </Link>
+            </div>
+          )}
+        </div>
+
+        <div className={styles.group}>
+          <button className={styles.groupTrigger} onClick={() => toggleGroup("operations")}>
+            <StorefrontIcon size={18} />
+            {!collapsed && <span>{naming.t("sidebar.operations")}</span>}
+            {!collapsed && (groupsOpen.operations ? <CaretDownIcon size={14} /> : <CaretRightIcon size={14} />)}
+          </button>
+          {(collapsed || groupsOpen.operations) && (
+            <div className={styles.submenu}>
+              <a
+                className={`${styles.item} ${!vetPwaUrl ? styles.itemDisabled : ""}`}
+                href={vetPwaUrl || "#"}
+                onClick={(e) => {
+                  if (!vetPwaUrl) e.preventDefault();
+                  closeSidebarOnMobile();
+                }}
+              >
+                <StethoscopeIcon size={18} />
+                {!collapsed && <span>{naming.t("sidebar.vetPwa")}</span>}
+              </a>
+
+              <a
+                className={`${styles.item} ${!pdvPwaUrl ? styles.itemDisabled : ""}`}
+                href={pdvPwaUrl || "#"}
+                onClick={(e) => {
+                  if (!pdvPwaUrl) e.preventDefault();
+                  closeSidebarOnMobile();
+                }}
+              >
+                <StorefrontIcon size={18} />
+                {!collapsed && <span>{naming.t("sidebar.pdvPwa")}</span>}
+              </a>
+            </div>
+          )}
+        </div>
+
+        <div className={styles.group}>
+          <button className={styles.groupTrigger} onClick={() => toggleGroup("finance")}>
+            <CurrencyCircleDollarIcon size={18} />
+            {!collapsed && <span>{naming.t("sidebar.finance")}</span>}
+            {!collapsed && (groupsOpen.finance ? <CaretDownIcon size={14} /> : <CaretRightIcon size={14} />)}
+          </button>
+          {(collapsed || groupsOpen.finance) && (
+            <div className={styles.submenu}>
+              <Link className={styles.item} to="/finance" onClick={closeSidebarOnMobile}>
+                <CurrencyCircleDollarIcon size={18} />
+                {!collapsed && <span>{naming.t("sidebar.financeSalesTaxes")}</span>}
+              </Link>
+            </div>
+          )}
+        </div>
+
+        <div className={styles.group}>
+          <button className={styles.groupTrigger} onClick={() => toggleGroup("reports")}>
+            <ChartBarIcon size={18} />
+            {!collapsed && <span>{naming.t("sidebar.reports")}</span>}
+            {!collapsed && (groupsOpen.reports ? <CaretDownIcon size={14} /> : <CaretRightIcon size={14} />)}
+          </button>
+          {(collapsed || groupsOpen.reports) && (
+            <div className={styles.submenu}>
+              <Link className={styles.item} to="/reports" onClick={closeSidebarOnMobile}>
+                <ChartBarIcon size={18} />
+                {!collapsed && <span>{naming.t("sidebar.reportsCenter")}</span>}
+              </Link>
+            </div>
+          )}
+        </div>
       </nav>
 
       {isAdmin && (
@@ -130,6 +273,7 @@ export function Sidebar() {
           </Link>
         </nav>
       )}
+      </div>
 
       <div className={styles.footer}>
         <div className={styles.userMenu} ref={userMenuRef}>

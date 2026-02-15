@@ -1,0 +1,81 @@
+.panel {
+  background: var(--card-bg);
+  border: var(--border-1) solid var(--card-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-1);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.state {
+  background: var(--card-bg);
+  border: var(--border-1) solid var(--card-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-1);
+  padding: var(--space-5);
+  color: var(--text-muted);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--text-base);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--space-1);
+}
+
+.kpiCard {
+  border: var(--border-1) solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  text-align: left;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.kpiCard:hover {
+  background: var(--surface-2);
+}
+
+.kpiCard:focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+}
+
+.kpiCardActive {
+  border-color: color-mix(in srgb, var(--btn-bg) 65%, transparent);
+  background: color-mix(in srgb, var(--btn-bg) 12%, var(--surface));
+}
+
+.kpiLabel {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+}
+
+.kpiValue {
+  font-size: var(--text-xl);
+  line-height: 1;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

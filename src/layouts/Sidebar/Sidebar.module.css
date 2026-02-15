@@ -4,7 +4,9 @@
   padding: var(--space-4);
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .header {
@@ -38,6 +40,53 @@
   gap: var(--space-2);
 }
 
+.menuArea {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-right: 2px;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.groupTrigger {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--text);
+  border: 1px solid transparent;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
+.groupTrigger:hover {
+  background: var(--surface-2);
+  border-color: var(--border);
+}
+
+.groupTrigger span {
+  flex: 1;
+  text-align: left;
+}
+
+.submenu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-left: var(--space-3);
+}
+
 .item,
 .itemButton {
   display: flex;
@@ -58,6 +107,11 @@
   border-color: var(--border);
 }
 
+.itemDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .footer {
   margin-top: auto;
   padding-top: var(--space-4);
@@ -69,8 +123,13 @@
 }
 
 .collapsed .item,
-.collapsed .itemButton {
+.collapsed .itemButton,
+.collapsed .groupTrigger {
   justify-content: center;
+}
+
+.collapsed .submenu {
+  padding-left: 0;
 }
 
 .userMenu {

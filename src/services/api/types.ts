@@ -224,6 +224,97 @@ export type PetStatsResponse = {
   others: number;
 };
 
+export type ItemType = "PRODUCT" | "SERVICE";
+export type ProductCategory = "MEDICINE" | "SUPPLY" | "FEED" | "OTHER";
+export type FiscalOriginCode = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7";
+
+export const ITEM_TYPE_OPTIONS: readonly ItemType[] = ["PRODUCT", "SERVICE"];
+export const PRODUCT_CATEGORY_OPTIONS: readonly ProductCategory[] = ["MEDICINE", "SUPPLY", "FEED", "OTHER"];
+export const FISCAL_ORIGIN_OPTIONS: ReadonlyArray<{ code: FiscalOriginCode; label: string }> = [
+  { code: "0", label: "Nacional" },
+  { code: "1", label: "Estrangeira - importação direta" },
+  { code: "2", label: "Estrangeira - adquirida no mercado interno" },
+  { code: "3", label: "Nacional - conteúdo importação > 40%" },
+  { code: "4", label: "Nacional - processo produtivo básico" },
+  { code: "5", label: "Nacional - outros casos" },
+  { code: "6", label: "Estrangeira - importação direta (sem similar)" },
+  { code: "7", label: "Estrangeira - adquirida no mercado interno (sem similar)" },
+];
+
+export type ProductFiscalRequest = {
+  ncm?: string;
+  cest?: string;
+  origin?: FiscalOriginCode;
+  gtinEan?: string;
+  gtinEanTrib?: string;
+  unitTrib?: string;
+  tribFactor?: number;
+  cbenef?: string;
+  serviceListCode?: string;
+};
+
+export type ProductFiscalResponse = {
+  ncm?: string;
+  cest?: string;
+  origin?: FiscalOriginCode;
+  gtinEan?: string;
+  gtinEanTrib?: string;
+  unitTrib?: string;
+  tribFactor?: number;
+  cbenef?: string;
+  serviceListCode?: string;
+};
+
+export type ProductListItemResponse = {
+  id: number;
+  sku: string;
+  name: string;
+  category: ProductCategory;
+  unit: string;
+  active: boolean;
+  salePrice: number;
+  costPrice: number;
+  minStock: number;
+};
+
+export type ProductResponse = {
+  id: number;
+  sku: string;
+  name: string;
+  itemType: ItemType;
+  category: ProductCategory;
+  unit: string;
+  active: boolean;
+  salePrice: number;
+  costPrice: number;
+  minStock: number;
+  fiscal?: ProductFiscalResponse | null;
+};
+
+export type CreateProductRequest = {
+  sku: string;
+  name: string;
+  itemType: ItemType;
+  category: ProductCategory;
+  unit: string;
+  salePrice: number;
+  costPrice: number;
+  minStock: number;
+  fiscal: ProductFiscalRequest;
+};
+
+export type UpdateProductRequest = {
+  sku?: string;
+  name?: string;
+  itemType?: ItemType;
+  category?: ProductCategory;
+  unit?: string;
+  salePrice?: number;
+  costPrice?: number;
+  minStock?: number;
+  fiscal?: ProductFiscalRequest;
+};
+
 export type IeIndicator = "CONTRIBUTOR" | "EXEMPT" | "NON_CONTRIBUTOR";
 export type Crt = "SIMPLES_NACIONAL" | "REGIME_NORMAL";
 

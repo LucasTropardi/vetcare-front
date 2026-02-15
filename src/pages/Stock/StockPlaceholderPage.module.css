@@ -1,0 +1,25 @@
+.page {
+  --page-safe-height: calc(100dvh - 108px);
+  padding: var(--space-6);
+  height: var(--page-safe-height);
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+}
+
+.card {
+  background: var(--card-bg);
+  border: var(--border-1) solid var(--card-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--text-3xl);
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--text-muted);
+}
