@@ -107,6 +107,18 @@
   border-color: var(--border);
 }
 
+.itemActive {
+  background: color-mix(in srgb, var(--brand) 14%, var(--surface));
+  border-color: color-mix(in srgb, var(--brand) 35%, var(--border));
+  color: color-mix(in srgb, var(--brand-ink) 75%, var(--text));
+  font-weight: var(--weight-semibold);
+}
+
+.itemActive:hover {
+  background: color-mix(in srgb, var(--brand) 18%, var(--surface));
+  border-color: color-mix(in srgb, var(--brand) 45%, var(--border));
+}
+
 .itemDisabled {
   opacity: 0.5;
   cursor: not-allowed;

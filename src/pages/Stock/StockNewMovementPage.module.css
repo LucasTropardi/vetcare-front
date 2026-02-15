@@ -1,0 +1,241 @@
+.page {
+  --page-safe-height: calc(100dvh - 108px);
+  padding: var(--space-6);
+  min-height: 0;
+  height: var(--page-safe-height);
+  overflow: auto;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: var(--space-3);
+  align-content: start;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--text-3xl);
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin: var(--space-1) 0 0;
+  color: var(--text-muted);
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-pill);
+  border: var(--border-1) solid var(--border);
+  background: var(--surface-2);
+  color: var(--text-muted);
+  padding: 0.35rem 0.8rem;
+  font-size: var(--text-sm);
+}
+
+.card {
+  background: var(--card-bg);
+  border: var(--border-1) solid var(--card-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-1);
+  padding: var(--space-4);
+  height: fit-content;
+  align-self: start;
+}
+
+.form {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.productSection {
+  border: var(--border-1) solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-2);
+  padding: var(--space-3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.productInfo {
+  display: grid;
+  gap: 2px;
+}
+
+.productLabel {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-subtle);
+}
+
+.productName {
+  font-weight: var(--weight-semibold);
+}
+
+.productMeta {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.productEmpty {
+  color: var(--text-muted);
+}
+
+.productActions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.field span {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.field input,
+.field select,
+.field textarea {
+  border-radius: var(--radius-md);
+  border: var(--border-1) solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--input-text);
+  font: inherit;
+}
+
+.field input,
+.field select {
+  height: 42px;
+  padding: 0 var(--space-3);
+}
+
+.field textarea {
+  min-height: 96px;
+  resize: vertical;
+  padding: var(--space-2) var(--space-3);
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  box-shadow: var(--focus);
+  border-color: transparent;
+}
+
+.inlineHint {
+  font-size: var(--text-xs);
+  color: var(--text-subtle);
+}
+
+.error {
+  border: 1px solid color-mix(in srgb, var(--danger) 38%, var(--border));
+  background: color-mix(in srgb, var(--danger) 10%, var(--surface));
+  color: var(--danger);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.success {
+  border: 1px solid color-mix(in srgb, var(--success) 38%, var(--border));
+  background: color-mix(in srgb, var(--success) 10%, var(--surface));
+  color: var(--success);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.primaryBtn {
+  height: 42px;
+  min-width: 180px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  cursor: pointer;
+  font: inherit;
+}
+
+.primaryBtn:hover {
+  background: var(--btn-bg-hover);
+}
+
+.primaryBtn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.denied {
+  background: var(--card-bg);
+  border: var(--border-1) solid var(--card-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+}
+
+.secondaryBtn {
+  height: 36px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-md);
+  border: var(--border-1) solid var(--border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+}
+
+.secondaryBtn:hover {
+  background: var(--surface);
+}
+
+@media (max-width: 980px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: var(--space-4);
+    height: auto;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer {
+    justify-content: stretch;
+  }
+
+  .primaryBtn {
+    width: 100%;
+  }
+}

@@ -22,7 +22,7 @@ import {
 } from "@phosphor-icons/react";
 import { useUiStore } from "../../store/ui.store";
 import { useAuthStore } from "../../store/auth.store";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { BrandLogo } from "../../components/brand/BrandLogo";
 import { useConfirmStore } from "../../store/confirm.store";
 import { useNaming } from "../../i18n/useNaming";
@@ -63,6 +63,8 @@ export function Sidebar() {
   const isAdmin = me?.role === "ADMIN";
   const vetPwaUrl = import.meta.env.VITE_VET_PWA_URL as string | undefined;
   const pdvPwaUrl = import.meta.env.VITE_PDV_PWA_URL as string | undefined;
+  const navItemClass = ({ isActive }: { isActive: boolean }) =>
+    `${styles.item} ${isActive ? styles.itemActive : ""}`;
 
   function closeSidebarOnMobile() {
     if (!isMobileNow()) return;
@@ -125,10 +127,10 @@ export function Sidebar() {
 
       <div className={styles.menuArea}>
       <nav className={styles.nav}>
-        <Link className={styles.item} to="/" onClick={closeSidebarOnMobile}>
+        <NavLink className={navItemClass} to="/" end onClick={closeSidebarOnMobile}>
           <HouseIcon size={18} />
           {!collapsed && <span>{naming.getTitle("home")}</span>}
-        </Link>
+        </NavLink>
 
         <div className={styles.group}>
           <button className={styles.groupTrigger} onClick={() => toggleGroup("registration")}>
@@ -138,30 +140,30 @@ export function Sidebar() {
           </button>
           {(collapsed || groupsOpen.registration) && (
             <div className={styles.submenu}>
-              <Link className={styles.item} to="/tutors" onClick={closeSidebarOnMobile}>
+              <NavLink className={navItemClass} to="/tutors" onClick={closeSidebarOnMobile}>
                 <UsersThreeIcon size={18} />
                 {!collapsed && <span>{naming.getTitle("tutors")}</span>}
-              </Link>
+              </NavLink>
 
-              <Link className={styles.item} to="/pets" onClick={closeSidebarOnMobile}>
+              <NavLink className={navItemClass} to="/pets" onClick={closeSidebarOnMobile}>
                 <PawPrintIcon size={18} />
                 {!collapsed && <span>{naming.getTitle("pets")}</span>}
-              </Link>
+              </NavLink>
 
-              <Link className={styles.item} to="/customer-companies" onClick={closeSidebarOnMobile}>
+              <NavLink className={navItemClass} to="/customer-companies" onClick={closeSidebarOnMobile}>
                 <BuildingsIcon size={18} />
                 {!collapsed && <span>{naming.getTitle("customerCompanies")}</span>}
-              </Link>
+              </NavLink>
 
-              <Link className={styles.item} to="/products" onClick={closeSidebarOnMobile}>
+              <NavLink className={navItemClass} to="/products" onClick={closeSidebarOnMobile}>
                 <PackageIcon size={18} />
                 {!collapsed && <span>{naming.getTitle("products")}</span>}
-              </Link>
+              </NavLink>
 
-              <Link className={styles.item} to="/company-profile" onClick={closeSidebarOnMobile}>
+              <NavLink className={navItemClass} to="/company-profile" onClick={closeSidebarOnMobile}>
                 <BuildingsIcon size={18} />
                 {!collapsed && <span>{naming.getTitle("companyProfile")}</span>}
-              </Link>
+              </NavLink>
             </div>
           )}
         </div>
@@ -174,25 +176,25 @@ export function Sidebar() {
           </button>
           {(collapsed || groupsOpen.stock) && (
             <div className={styles.submenu}>
-              <Link className={styles.item} to="/stock/balances" onClick={closeSidebarOnMobile}>
+              <NavLink className={navItemClass} to="/stock/balances" onClick={closeSidebarOnMobile}>
                 <PackageIcon size={18} />
                 {!collapsed && <span>{naming.t("sidebar.stockBalances")}</span>}
-              </Link>
+              </NavLink>
 
-              <Link className={styles.item} to="/stock/movements" onClick={closeSidebarOnMobile}>
+              <NavLink className={navItemClass} to="/stock/movements" onClick={closeSidebarOnMobile}>
                 <ArrowsClockwiseIcon size={18} />
                 {!collapsed && <span>{naming.t("sidebar.stockMovements")}</span>}
-              </Link>
+              </NavLink>
 
-              <Link className={styles.item} to="/stock/new-movement" onClick={closeSidebarOnMobile}>
+              <NavLink className={navItemClass} to="/stock/new-movement" onClick={closeSidebarOnMobile}>
                 <PlusCircleIcon size={18} />
                 {!collapsed && <span>{naming.t("sidebar.stockNewMovement")}</span>}
-              </Link>
+              </NavLink>
 
-              <Link className={styles.item} to="/stock/product-view" onClick={closeSidebarOnMobile}>
+              <NavLink className={navItemClass} to="/stock/product-view" onClick={closeSidebarOnMobile}>
                 <MagnifyingGlassIcon size={18} />
                 {!collapsed && <span>{naming.t("sidebar.stockProductDetail")}</span>}
-              </Link>
+              </NavLink>
             </div>
           )}
         </div>
@@ -240,10 +242,10 @@ export function Sidebar() {
           </button>
           {(collapsed || groupsOpen.finance) && (
             <div className={styles.submenu}>
-              <Link className={styles.item} to="/finance" onClick={closeSidebarOnMobile}>
+              <NavLink className={navItemClass} to="/finance" onClick={closeSidebarOnMobile}>
                 <CurrencyCircleDollarIcon size={18} />
                 {!collapsed && <span>{naming.t("sidebar.financeSalesTaxes")}</span>}
-              </Link>
+              </NavLink>
             </div>
           )}
         </div>
@@ -256,10 +258,10 @@ export function Sidebar() {
           </button>
           {(collapsed || groupsOpen.reports) && (
             <div className={styles.submenu}>
-              <Link className={styles.item} to="/reports" onClick={closeSidebarOnMobile}>
+              <NavLink className={navItemClass} to="/reports" onClick={closeSidebarOnMobile}>
                 <ChartBarIcon size={18} />
                 {!collapsed && <span>{naming.t("sidebar.reportsCenter")}</span>}
-              </Link>
+              </NavLink>
             </div>
           )}
         </div>
@@ -267,10 +269,10 @@ export function Sidebar() {
 
       {isAdmin && (
         <nav className={styles.nav}>
-          <Link className={styles.item} to="/users" onClick={closeSidebarOnMobile}>
+          <NavLink className={navItemClass} to="/users" onClick={closeSidebarOnMobile}>
             <HouseIcon size={18} />
             {!collapsed && <span>{naming.getTitle("users")}</span>}
-          </Link>
+          </NavLink>
         </nav>
       )}
       </div>
