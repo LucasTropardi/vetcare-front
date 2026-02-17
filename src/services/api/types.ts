@@ -544,3 +544,53 @@ export type PageResponse<T> = {
   sort?: unknown;
   pageable?: unknown;
 };
+
+export type ReportFormat = "PDF" | "CSV" | "XLSX";
+export type PdfOrientation = "PORTRAIT" | "LANDSCAPE";
+export type ReportFilterType = "TEXT" | "BOOLEAN" | "SELECT" | "NUMBER";
+
+export type ReportOptionResponse = {
+  value: string;
+  label: string;
+};
+
+export type ReportFilterResponse = {
+  key: string;
+  label: string;
+  type: ReportFilterType;
+  options?: ReportOptionResponse[] | null;
+  placeholder?: string | null;
+};
+
+export type ReportColumnResponse = {
+  key: string;
+  label: string;
+};
+
+export type ReportDefinitionResponse = {
+  key: string;
+  title: string;
+  description: string;
+  filters: ReportFilterResponse[];
+  columns: ReportColumnResponse[];
+  formats: ReportFormat[];
+};
+
+export type ReportRunRequest = {
+  filters?: Record<string, unknown>;
+  columns?: string[];
+  page?: number;
+  size?: number;
+  sort?: string[];
+};
+
+export type ReportPreviewResponse = {
+  reportKey: string;
+  title: string;
+  columns: ReportColumnResponse[];
+  rows: Array<Record<string, unknown>>;
+  totalElements: number;
+  totalPages: number;
+  page: number;
+  size: number;
+};
