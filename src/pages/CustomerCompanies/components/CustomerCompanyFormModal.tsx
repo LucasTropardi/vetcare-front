@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./CustomerCompanyFormModal.module.css";
+import { MagnifyingGlassIcon } from "@phosphor-icons/react";
 
 import { useConfirmStore } from "../../../store/confirm.store";
 import type {
@@ -21,6 +22,7 @@ import { useNaming } from "../../../i18n/useNaming";
 import { getApiErrorMessage } from "../../../services/api/errors";
 import { getAddressByCep } from "../../../services/api/viacep.service";
 import { validateCnpj } from "../../../utils/documentValidation";
+import { TutorLookupModal } from "../../../components/lookups/TutorLookupModal";
 
 type Props = {
   companyId?: number;
@@ -161,6 +163,8 @@ export function CustomerCompanyFormModal({ companyId, onClose, onSaved }: Props)
   const [saving, setSaving] = useState(false);
   const [cepLoading, setCepLoading] = useState(false);
   const [tutors, setTutors] = useState<TutorListItemResponse[]>([]);
+  const [tutorLookupOpen, setTutorLookupOpen] = useState(false);
+  const [selectedTutorName, setSelectedTutorName] = useState("");
   const lastCepLookup = useRef<string | null>(null);
 
   const [form, setForm] = useState<FormState>({
@@ -197,6 +201,12 @@ export function CustomerCompanyFormModal({ companyId, onClose, onSaved }: Props)
     if (addressInvalid) return false;
     return true;
   }, [addressInvalid, cnpjInvalid, form.cnpj, form.legalName, form.tutorId, isEdit]);
+
+  const selectedTutorLabel = useMemo(() => {
+    if (selectedTutorName) return selectedTutorName;
+    const selected = tutors.find((t) => String(t.id) === form.tutorId);
+    return selected?.name ?? "";
+  }, [selectedTutorName, tutors, form.tutorId]);
 
   useEffect(() => {
     let mounted = true;
@@ -364,19 +374,19 @@ export function CustomerCompanyFormModal({ companyId, onClose, onSaved }: Props)
             <div className={styles.grid}>
               <label className={styles.field}>
                 <span>{naming.getLabel("tutor")}</span>
-                <select
-                  value={form.tutorId}
-                  onChange={(e) => setForm((s) => ({ ...s, tutorId: e.target.value }))}
-                  required
-                  disabled={isEdit}
-                >
-                  <option value="">{naming.getLabel("selectTutor")}</option>
-                  {tutors.map((t) => (
-                    <option key={t.id} value={t.id}>
-                      {t.name}
-                    </option>
-                  ))}
-                </select>
+                <div className={styles.lookupRow}>
+                  <input value={selectedTutorLabel} placeholder={naming.getLabel("selectTutor")} readOnly />
+                  <button
+                    type="button"
+                    className={styles.lookupBtn}
+                    title={naming.getLabel("selectTutor")}
+                    aria-label={naming.getLabel("selectTutor")}
+                    onClick={() => setTutorLookupOpen(true)}
+                    disabled={isEdit}
+                  >
+                    <MagnifyingGlassIcon size={16} />
+                  </button>
+                </div>
               </label>
 
               <label className={styles.field}>
@@ -573,6 +583,17 @@ export function CustomerCompanyFormModal({ companyId, onClose, onSaved }: Props)
           </form>
         )}
       </div>
+
+      {tutorLookupOpen && !isEdit && (
+        <TutorLookupModal
+          onClose={() => setTutorLookupOpen(false)}
+          onSelect={(tutor) => {
+            setSelectedTutorName(tutor.name);
+            setForm((s) => ({ ...s, tutorId: String(tutor.id) }));
+            setTutorLookupOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 }

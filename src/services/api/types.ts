@@ -594,3 +594,51 @@ export type ReportPreviewResponse = {
   page: number;
   size: number;
 };
+
+export type AppointmentType = "VET" | "PETSHOP";
+export type AppointmentStatus = "OPEN" | "FINISHED" | "CANCELED";
+
+export const APPOINTMENT_TYPE_OPTIONS: readonly AppointmentType[] = ["VET", "PETSHOP"];
+export const APPOINTMENT_STATUS_OPTIONS: readonly AppointmentStatus[] = ["OPEN", "FINISHED", "CANCELED"];
+
+export type OpenAppointmentRequest = {
+  petId: number;
+  appointmentType?: AppointmentType;
+  veterinarianUserId?: number;
+  serviceProductId?: number;
+  scheduledStartAt?: string;
+  scheduledEndAt?: string;
+  notes?: string;
+  chiefComplaint?: string;
+};
+
+export type UpdateAppointmentRequest = {
+  appointmentType?: AppointmentType;
+  veterinarianUserId?: number;
+  serviceProductId?: number;
+  scheduledStartAt?: string;
+  scheduledEndAt?: string;
+  notes?: string;
+  chiefComplaint?: string;
+};
+
+export type AppointmentResponse = {
+  id: number;
+  petId: number;
+  appointmentType: AppointmentType;
+  veterinarianUserId?: number | null;
+  serviceProductId?: number | null;
+  status: AppointmentStatus;
+  scheduledStartAt: string;
+  scheduledEndAt: string;
+  notes?: string | null;
+  openedAt: string;
+  finishedAt?: string | null;
+  canceledAt?: string | null;
+  cancelReason?: string | null;
+  createdBy?: number | null;
+  finishedBy?: number | null;
+  canceledBy?: number | null;
+  createdAt: string;
+  updatedAt: string;
+};

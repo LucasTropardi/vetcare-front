@@ -2,12 +2,10 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  display: grid;
+  place-items: center;
   padding: var(--space-6);
   z-index: var(--z-modal);
-  overflow: auto;
 }
 
 .panel {
@@ -36,15 +34,9 @@
   font-size: var(--text-lg);
 }
 
-.state {
-  padding: var(--space-6);
-  color: var(--text-muted);
-}
-
 .form {
   padding: var(--space-4);
   overflow: auto;
-  flex: 1 1 auto;
 }
 
 .grid {
@@ -60,8 +52,8 @@
 }
 
 .field span {
-  font-size: var(--text-sm);
   color: var(--text-muted);
+  font-size: var(--text-sm);
 }
 
 .field input,
@@ -153,7 +145,7 @@
   cursor: not-allowed;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 720px) {
   .grid {
     grid-template-columns: 1fr;
   }

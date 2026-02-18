@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import styles from "./PetFormModal.module.css";
+import { MagnifyingGlassIcon } from "@phosphor-icons/react";
 import { useConfirmStore } from "../../../store/confirm.store";
 import {
   createPet,
@@ -21,6 +22,7 @@ import type {
 } from "../../../services/api/types";
 import { useNaming } from "../../../i18n/useNaming";
 import { getApiErrorMessage } from "../../../services/api/errors";
+import { TutorLookupModal } from "../../../components/lookups/TutorLookupModal";
 
 type Props = {
   petId?: number;
@@ -77,6 +79,8 @@ export function PetFormModal({ petId, onClose, onSaved }: Props) {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [tutors, setTutors] = useState<TutorListItemResponse[]>([]);
+  const [tutorLookupOpen, setTutorLookupOpen] = useState(false);
+  const [selectedTutorName, setSelectedTutorName] = useState("");
 
   const [form, setForm] = useState<FormState>({
     tutorId: "",
@@ -95,6 +99,12 @@ export function PetFormModal({ petId, onClose, onSaved }: Props) {
     if (!form.species) return false;
     return true;
   }, [form]);
+
+  const selectedTutorLabel = useMemo(() => {
+    if (selectedTutorName) return selectedTutorName;
+    const selected = tutors.find((t) => String(t.id) === form.tutorId);
+    return selected?.name ?? "";
+  }, [selectedTutorName, tutors, form.tutorId]);
 
   useEffect(() => {
     let mounted = true;
@@ -173,7 +183,6 @@ export function PetFormModal({ petId, onClose, onSaved }: Props) {
       <div className={styles.panel}>
         <div className={styles.header}>
           <div className={styles.title}>{isEdit ? naming.getTitle("editPet") : naming.getTitle("newPet")}</div>
-          <button className={styles.btnGhost} onClick={onClose}>{naming.getLabel("cancel")}</button>
         </div>
 
         {loading ? (
@@ -183,16 +192,18 @@ export function PetFormModal({ petId, onClose, onSaved }: Props) {
             <div className={styles.grid}>
               <label className={styles.field}>
                 <span>{naming.getLabel("tutor")}</span>
-                <select
-                  value={form.tutorId}
-                  onChange={(e) => setForm((s) => ({ ...s, tutorId: e.target.value }))}
-                  required
-                >
-                  <option value="">{naming.getLabel("selectTutor")}</option>
-                  {tutors.map((t) => (
-                    <option key={t.id} value={t.id}>{t.name}</option>
-                  ))}
-                </select>
+                <div className={styles.lookupRow}>
+                  <input value={selectedTutorLabel} placeholder={naming.getLabel("selectTutor")} readOnly />
+                  <button
+                    type="button"
+                    className={styles.lookupBtn}
+                    title={naming.getLabel("selectTutor")}
+                    aria-label={naming.getLabel("selectTutor")}
+                    onClick={() => setTutorLookupOpen(true)}
+                  >
+                    <MagnifyingGlassIcon size={16} />
+                  </button>
+                </div>
               </label>
 
               <label className={styles.field}>
@@ -280,6 +291,17 @@ export function PetFormModal({ petId, onClose, onSaved }: Props) {
           </form>
         )}
       </div>
+
+      {tutorLookupOpen && (
+        <TutorLookupModal
+          onClose={() => setTutorLookupOpen(false)}
+          onSelect={(tutor) => {
+            setSelectedTutorName(tutor.name);
+            setForm((s) => ({ ...s, tutorId: String(tutor.id) }));
+            setTutorLookupOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 }

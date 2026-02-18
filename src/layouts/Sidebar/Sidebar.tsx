@@ -207,6 +207,11 @@ export function Sidebar() {
           </button>
           {(collapsed || groupsOpen.operations) && (
             <div className={styles.submenu}>
+              <NavLink className={navItemClass} to="/appointments" onClick={closeSidebarOnMobile}>
+                <StethoscopeIcon size={18} />
+                {!collapsed && <span>{naming.t("sidebar.appointments")}</span>}
+              </NavLink>
+
               <a
                 className={`${styles.item} ${!vetPwaUrl ? styles.itemDisabled : ""}`}
                 href={vetPwaUrl || "#"}

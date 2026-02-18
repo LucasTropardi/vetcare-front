@@ -16,6 +16,7 @@ import { StockNewMovementPage } from "../pages/Stock/StockNewMovementPage";
 import { StockProductDetailPage } from "../pages/Stock/StockProductDetailPage";
 import { FinancePage } from "../pages/Finance/FinancePage";
 import { ReportsPage } from "../pages/Reports/ReportsPage";
+import { AppointmentsPage } from "../pages/Appointments/AppointmentsPage";
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +43,7 @@ export const router = createBrowserRouter([
       { path: "/stock/product-view", element: <StockProductDetailPage /> },
       { path: "/finance", element: <FinancePage /> },
       { path: "/reports", element: <ReportsPage /> },
+      { path: "/appointments", element: <AppointmentsPage /> },
     ],
   },
 ]);
