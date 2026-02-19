@@ -1,16 +1,20 @@
 import { create } from "zustand";
-import type { UserResponseWithRole } from "../services/api/types";
+import type { Role, UserResponseWithRole } from "../services/api/types";
+
+export type OidcUserSummary = {
+  sub: string;
+  email: string | null;
+  name: string | null;
+  roles: Role[];
+};
 
 type AuthState = {
-  accessToken: string | null;
-  tokenType: string | null;
   me: UserResponseWithRole | null;
+  oidcUser: OidcUserSummary | null;
 
-  setAuth: (accessToken: string, tokenType: string) => void;
   setMe: (me: UserResponseWithRole | null) => void;
-
-  clearAuth: () => void;
-  isAuthenticated: () => boolean;
+  setOidcUser: (oidcUser: OidcUserSummary | null) => void;
+  clearAuthState: () => void;
 };
 
 const STORAGE_KEY = "vetcare:auth";
@@ -18,50 +22,40 @@ const STORAGE_KEY = "vetcare:auth";
 function loadInitial() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { accessToken: null, tokenType: null, me: null };
+    if (!raw) return { me: null, oidcUser: null };
 
     const parsed = JSON.parse(raw);
     return {
-      accessToken: typeof parsed.accessToken === "string" ? parsed.accessToken : null,
-      tokenType: typeof parsed.tokenType === "string" ? parsed.tokenType : null,
       me: parsed.me ?? null,
+      oidcUser: parsed.oidcUser ?? null,
     };
   } catch {
-    return { accessToken: null, tokenType: null, me: null };
+    return { me: null, oidcUser: null };
   }
 }
 
 const initial = loadInitial();
 
 export const useAuthStore = create<AuthState>((set, get) => ({
-  accessToken: initial.accessToken,
-  tokenType: initial.tokenType,
   me: initial.me,
-
-  setAuth: (accessToken, tokenType) => {
-    const current = get();
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({ ...current, accessToken, tokenType })
-    );
-    set({ accessToken, tokenType });
-  },
+  oidcUser: initial.oidcUser,
 
   setMe: (me) => {
     const current = get();
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({ ...current, me })
-    );
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...current, me }));
     set({ me });
   },
 
-  clearAuth: () => {
-    localStorage.removeItem(STORAGE_KEY);
-    set({ accessToken: null, tokenType: null, me: null });
+  setOidcUser: (oidcUser) => {
+    const current = get();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...current, oidcUser }));
+    set({ oidcUser });
   },
 
-  isAuthenticated: () => !!get().accessToken,
+  clearAuthState: () => {
+    localStorage.removeItem(STORAGE_KEY);
+    set({ me: null, oidcUser: null });
+  },
 }));
 
 export const authStore = {
