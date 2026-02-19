@@ -15,8 +15,6 @@ type Props = {
 type FormState = {
   name: string;
   email: string;
-  password: string;
-  confirmPassword: string;
 };
 
 export function MeFormModal({ onClose, onSaved }: Props) {
@@ -29,31 +27,20 @@ export function MeFormModal({ onClose, onSaved }: Props) {
   const [form, setForm] = useState<FormState>({
     name: "",
     email: "",
-    password: "",
-    confirmPassword: "",
   });
 
   useEffect(() => {
     setForm({
       name: me?.name ?? "",
       email: me?.email ?? "",
-      password: "",
-      confirmPassword: "",
     });
   }, [me]);
-
-  const passwordMismatch = useMemo(() => {
-    if (!form.password.trim() && !form.confirmPassword.trim()) return false;
-    return form.password !== form.confirmPassword;
-  }, [form.password, form.confirmPassword]);
 
   const canSubmit = useMemo(() => {
     if (!form.name.trim()) return false;
     if (!form.email.trim()) return false;
-    if (passwordMismatch) return false;
-    if (form.password.trim() && !form.confirmPassword.trim()) return false;
     return true;
-  }, [form, passwordMismatch]);
+  }, [form]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -73,7 +60,6 @@ export function MeFormModal({ onClose, onSaved }: Props) {
       const payload = {
         name: form.name.trim() || undefined,
         email: form.email.trim() || undefined,
-        password: form.password.trim() ? form.password.trim() : undefined,
       };
 
       const updated = await updateMe(payload);
@@ -131,35 +117,7 @@ export function MeFormModal({ onClose, onSaved }: Props) {
                   placeholder={naming.getPlaceholder("email")}
                 />
               </label>
-
-              <label className={styles.field}>
-                <span>{naming.getLabel("password")} {naming.getLabel("optional")}</span>
-                <input
-                  type="password"
-                  name="profile-new-password"
-                  autoComplete="new-password"
-                  value={form.password}
-                  onChange={(e) => setForm((s) => ({ ...s, password: e.target.value }))}
-                  placeholder={naming.getMessage("leaveEmptyPasswordToKeep")}
-                />
-              </label>
-
-              <label className={styles.field}>
-                <span>{naming.getLabel("confirmPassword")}</span>
-                <input
-                  type="password"
-                  name="profile-confirm-password"
-                  autoComplete="new-password"
-                  value={form.confirmPassword}
-                  onChange={(e) => setForm((s) => ({ ...s, confirmPassword: e.target.value }))}
-                  placeholder={naming.getPlaceholder("password")}
-                />
-              </label>
             </div>
-
-            {passwordMismatch && (
-              <div className={styles.error}>{naming.getMessage("passwordsDoNotMatch")}</div>
-            )}
 
             <div className={styles.actions}>
               <button className={styles.btnGhost} type="button" onClick={onClose} disabled={saving}>

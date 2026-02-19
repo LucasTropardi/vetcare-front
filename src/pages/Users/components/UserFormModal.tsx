@@ -19,6 +19,7 @@ type FormState = {
   name: string;
   email: string;
   password: string;
+  confirmPassword: string;
   role: Role;
   active: boolean;
 };
@@ -38,16 +39,24 @@ export function UserFormModal({ userId, onClose, onSaved, currentRole, canEditTa
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
     role: DEFAULT_ROLE,
     active: true,
   });
+
+  const passwordMismatch = useMemo(() => {
+    if (!form.password.trim() && !form.confirmPassword.trim()) return false;
+    return form.password !== form.confirmPassword;
+  }, [form.password, form.confirmPassword]);
 
   const canSubmit = useMemo(() => {
     if (!form.name.trim()) return false;
     if (!form.email.trim()) return false;
     if (!isEdit && !form.password.trim()) return false;
+    if (isEdit && form.password.trim() && !form.confirmPassword.trim()) return false;
+    if (passwordMismatch) return false;
     return true;
-  }, [form, isEdit]);
+  }, [form, isEdit, passwordMismatch]);
 
   useEffect(() => {
     let mounted = true;
@@ -65,6 +74,7 @@ export function UserFormModal({ userId, onClose, onSaved, currentRole, canEditTa
           name: u.name ?? "",
           email: u.email ?? "",
           password: "",
+          confirmPassword: "",
           role: u.role,
           active: !!u.active,
         });
@@ -106,6 +116,7 @@ export function UserFormModal({ userId, onClose, onSaved, currentRole, canEditTa
           role: form.role,
           active: form.active,
           password: form.password.trim() ? form.password.trim() : undefined,
+          confirmPassword: form.password.trim() ? form.confirmPassword.trim() : undefined,
         };
 
         await updateUser(userId!, payload);
@@ -114,6 +125,7 @@ export function UserFormModal({ userId, onClose, onSaved, currentRole, canEditTa
           name: form.name.trim(),
           email: form.email.trim(),
           password: form.password.trim(),
+          confirmPassword: form.confirmPassword.trim(),
           role: form.role,
         };
 
@@ -186,6 +198,16 @@ export function UserFormModal({ userId, onClose, onSaved, currentRole, canEditTa
               </label>
 
               <label className={styles.field}>
+                <span>{naming.getLabel("confirmPassword")} {isEdit ? naming.getLabel("optional") : ""}</span>
+                <input
+                  type="password"
+                  value={form.confirmPassword}
+                  onChange={(e) => setForm((s) => ({ ...s, confirmPassword: e.target.value }))}
+                  placeholder={naming.getPlaceholder("password")}
+                />
+              </label>
+
+              <label className={styles.field}>
                 <span>{naming.getLabel("role")}</span>
                 <select
                   value={form.role}
@@ -208,6 +230,10 @@ export function UserFormModal({ userId, onClose, onSaved, currentRole, canEditTa
                 </label>
               )}
             </div>
+
+            {passwordMismatch && (
+              <div className={styles.error}>{naming.getMessage("passwordsDoNotMatch")}</div>
+            )}
 
             <div className={styles.actions}>
               <button className={styles.btnGhost} type="button" onClick={onClose} disabled={saving}>

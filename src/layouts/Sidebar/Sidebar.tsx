@@ -26,6 +26,7 @@ import { useNavigate, NavLink } from "react-router-dom";
 import { BrandLogo } from "../../components/brand/BrandLogo";
 import { useConfirmStore } from "../../store/confirm.store";
 import { useNaming } from "../../i18n/useNaming";
+import { useAuth } from "react-oidc-context";
 
 const MOBILE_BREAKPOINT = 900;
 
@@ -43,8 +44,10 @@ export function Sidebar() {
   const setCollapsed = useUiStore((s) => s.setSidebarCollapsed);
 
   const me = useAuthStore((s) => s.me);
-  const clearAuth = useAuthStore((s) => s.clearAuth);
+  const clearAuthState = useAuthStore((s) => s.clearAuthState);
+  const oidcUser = useAuthStore((s) => s.oidcUser);
   const navigate = useNavigate();
+  const auth = useAuth();
 
   const [groupsOpen, setGroupsOpen] = useState<Record<SidebarGroup, boolean>>({
     registration: true,
@@ -60,7 +63,7 @@ export function Sidebar() {
 
   const confirm = useConfirmStore((s) => s.confirm);
 
-  const isAdmin = me?.role === "ADMIN";
+  const isAdmin = me?.role === "ADMIN" || oidcUser?.roles.includes("ADMIN");
   const vetPwaUrl = import.meta.env.VITE_VET_PWA_URL as string | undefined;
   const pdvPwaUrl = import.meta.env.VITE_PDV_PWA_URL as string | undefined;
   const navItemClass = ({ isActive }: { isActive: boolean }) =>
@@ -88,8 +91,13 @@ export function Sidebar() {
 
     if (!ok) return;
 
-    clearAuth();
-    navigate("/login", { replace: true });
+    try {
+      await auth.signoutRedirect();
+    } catch {
+      await auth.removeUser();
+      clearAuthState();
+      navigate("/login", { replace: true });
+    }
   }
 
   useEffect(() => {

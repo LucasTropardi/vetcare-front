@@ -38,6 +38,7 @@ export type CreateUserRequest = {
   name: string;
   email: string;
   password: string;
+  confirmPassword: string;
   role: Role;
 };
 
@@ -51,6 +52,7 @@ export type UpdateUserRequest = {
   name?: string;
   email?: string;
   password?: string;
+  confirmPassword?: string;
   role?: Role;
   active?: boolean;
 };

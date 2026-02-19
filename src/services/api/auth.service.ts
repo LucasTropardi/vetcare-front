@@ -1,7 +1,3 @@
-import { http } from "./http";
-import type { LoginRequest, LoginResponse } from "./types";
-
-export async function login(req: LoginRequest): Promise<LoginResponse> {
-  const { data } = await http.post<LoginResponse>("/api/auth/login", req);
-  return data;
+export async function login(): Promise<never> {
+  throw new Error("Deprecated: use OIDC Authorization Code + PKCE flow");
 }
