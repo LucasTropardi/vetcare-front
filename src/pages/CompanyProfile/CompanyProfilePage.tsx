@@ -522,7 +522,7 @@ export function CompanyProfilePage() {
 
         <footer className={styles.footer}>
           <span className={styles.meta}>
-            {loadedAt ? `${naming.getLabel("lastUpdate")}: ${new Date(loadedAt).toLocaleString()}` : ""}
+            {loadedAt ? `${naming.getLabel("lastUpdate")}: ${new Date(loadedAt).toLocaleString("pt-BR")}` : ""}
           </span>
 
           {editable ? (

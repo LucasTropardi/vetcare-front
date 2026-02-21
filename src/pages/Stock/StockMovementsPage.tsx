@@ -9,6 +9,7 @@ import { getMaxListItems } from "../../config/listMemory";
 import { listStockMovements } from "../../services/api/stock.service";
 import { getProductById } from "../../services/api/products.service";
 import { StockMovementsTable, type StockMovementRow } from "./components/StockMovementsTable";
+import { DateInputBR } from "../../components/DateInputBR/DateInputBR";
 
 type MovementTypeFilter = "ALL" | StockMovementType;
 
@@ -232,20 +233,18 @@ export function StockMovementsPage() {
             <option value="ADJUSTMENT">{naming.t("stockMovementType.ADJUSTMENT")}</option>
           </select>
 
-          <input
-            className={`${styles.input} ${styles.dateInput}`}
-            type="date"
+          <DateInputBR
             value={dateFrom}
-            onChange={(e) => setDateFrom(e.target.value)}
-            aria-label={naming.getLabel("dateFrom")}
+            onChange={setDateFrom}
+            ariaLabel={naming.getLabel("dateFrom")}
+            inputClassName={`${styles.input} ${styles.dateInput}`}
           />
 
-          <input
-            className={`${styles.input} ${styles.dateInput}`}
-            type="date"
+          <DateInputBR
             value={dateTo}
-            onChange={(e) => setDateTo(e.target.value)}
-            aria-label={naming.getLabel("dateTo")}
+            onChange={setDateTo}
+            ariaLabel={naming.getLabel("dateTo")}
+            inputClassName={`${styles.input} ${styles.dateInput}`}
           />
 
           {productIdFilter && <span className={styles.chip}>{`${naming.getLabel("productId")}: ${productIdFilter}`}</span>}

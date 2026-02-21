@@ -64,7 +64,7 @@ export function Sidebar() {
   const confirm = useConfirmStore((s) => s.confirm);
 
   const isAdmin = me?.role === "ADMIN" || oidcUser?.roles.includes("ADMIN");
-  const vetPwaUrl = import.meta.env.VITE_VET_PWA_URL as string | undefined;
+  const clinicUrl = (import.meta.env.VITE_CLINIC_URL as string | undefined) ?? "http://localhost:5174";
   const pdvPwaUrl = import.meta.env.VITE_PDV_PWA_URL as string | undefined;
   const navItemClass = ({ isActive }: { isActive: boolean }) =>
     `${styles.item} ${isActive ? styles.itemActive : ""}`;
@@ -221,15 +221,16 @@ export function Sidebar() {
               </NavLink>
 
               <a
-                className={`${styles.item} ${!vetPwaUrl ? styles.itemDisabled : ""}`}
-                href={vetPwaUrl || "#"}
-                onClick={(e) => {
-                  if (!vetPwaUrl) e.preventDefault();
+                className={`${styles.item}`}
+                href={clinicUrl}
+                onClick={() => {
                   closeSidebarOnMobile();
                 }}
+                target="_blank"
+                rel="noreferrer"
               >
                 <StethoscopeIcon size={18} />
-                {!collapsed && <span>{naming.t("sidebar.vetPwa")}</span>}
+                {!collapsed && <span>Clinic</span>}
               </a>
 
               <a

@@ -26,6 +26,7 @@ import { getApiErrorMessage } from "../../services/api/errors";
 import { AppointmentFormModal } from "./components/AppointmentFormModal";
 import { AppointmentStatusBadge } from "./components/AppointmentStatusBadge";
 import { AppointmentTypeBadge } from "./components/AppointmentTypeBadge";
+import { DateInputBR } from "../../components/DateInputBR/DateInputBR";
 
 function canManageAppointments(role?: Role) {
   return role === "ADMIN" || role === "VET" || role === "RECEPTION";
@@ -47,7 +48,7 @@ function endOfDayIso(dateInput: string) {
 
 function formatDateTime(value: string) {
   try {
-    return new Date(value).toLocaleString();
+    return new Date(value).toLocaleString("pt-BR");
   } catch {
     return value;
   }
@@ -225,12 +226,12 @@ export function AppointmentsPage() {
       <section className={styles.filtersCard}>
         <label>
           <span>{naming.getMessage("appointmentsDateFrom")}</span>
-          <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
+          <DateInputBR value={dateFrom} onChange={setDateFrom} ariaLabel={naming.getMessage("appointmentsDateFrom")} />
         </label>
 
         <label>
           <span>{naming.getMessage("appointmentsDateTo")}</span>
-          <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
+          <DateInputBR value={dateTo} onChange={setDateTo} ariaLabel={naming.getMessage("appointmentsDateTo")} />
         </label>
 
         <label>

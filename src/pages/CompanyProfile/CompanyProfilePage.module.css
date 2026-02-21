@@ -1,9 +1,9 @@
 .page {
-  --page-safe-height: calc(100dvh - 108px);
   padding: var(--space-6);
   min-height: 0;
-  height: var(--page-safe-height);
-  overflow: auto;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
   display: grid;
   gap: var(--space-3);
   background:
@@ -217,7 +217,6 @@
 @media (max-width: 640px) {
   .page {
     padding: var(--space-4);
-    height: auto;
   }
 
   .grid {

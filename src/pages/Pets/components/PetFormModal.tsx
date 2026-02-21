@@ -23,6 +23,7 @@ import type {
 import { useNaming } from "../../../i18n/useNaming";
 import { getApiErrorMessage } from "../../../services/api/errors";
 import { TutorLookupModal } from "../../../components/lookups/TutorLookupModal";
+import { DateInputBR } from "../../../components/DateInputBR/DateInputBR";
 
 type Props = {
   petId?: number;
@@ -253,10 +254,10 @@ export function PetFormModal({ petId, onClose, onSaved }: Props) {
 
               <label className={styles.field}>
                 <span>{naming.getLabel("birthDate")}</span>
-                <input
-                  type="date"
+                <DateInputBR
                   value={form.birthDate}
-                  onChange={(e) => setForm((s) => ({ ...s, birthDate: e.target.value }))}
+                  onChange={(value) => setForm((s) => ({ ...s, birthDate: value }))}
+                  ariaLabel={naming.getLabel("birthDate")}
                 />
               </label>
 
