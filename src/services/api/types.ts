@@ -23,6 +23,9 @@ export type UserResponseWithRole = {
   email: string;
   role: Role;
   active: boolean;
+  professionalLicense?: string | null;
+  signatureImageBase64?: string | null;
+  signatureImageContentType?: string | null;
 };
 
 export type UserStatsResponse = {
@@ -40,12 +43,18 @@ export type CreateUserRequest = {
   password: string;
   confirmPassword: string;
   role: Role;
+  professionalLicense?: string;
+  signatureImageBase64?: string;
+  signatureImageContentType?: string;
 };
 
 export type UpdateMeRequest = {
   name?: string;
   email?: string;
   password?: string;
+  professionalLicense?: string;
+  signatureImageBase64?: string;
+  signatureImageContentType?: string;
 };
 
 export type UpdateUserRequest = {
@@ -55,6 +64,9 @@ export type UpdateUserRequest = {
   confirmPassword?: string;
   role?: Role;
   active?: boolean;
+  professionalLicense?: string;
+  signatureImageBase64?: string;
+  signatureImageContentType?: string;
 };
 
 export type TutorAddressRequest = {
